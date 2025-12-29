@@ -1,8 +1,8 @@
 {
     "metadata": {
-        "title": "Free Image to Black and White Converter - EasyBW",
-        "description": "Convert your color photos to black and white instantly. Free online tool for grayscale conversion, line art, and coloring pages. Privacy-friendly, no upload required.",
-        "keywords": "black and white converter, image to grayscale, photo to coloring page, line art generator, print optimization",
+        "title": "Free Image to Black and White Converter - MakeBW.com",
+        "description": "Instantly make any image black and white with MakeBW. The best free online converter for grayscale, line art, and coloring pages. No upload needed, 100% private.",
+        "keywords": "make image black and white, image to black and white converter, convert photo to grayscale, turn picture into coloring page",
         "format_title": "Convert {format} to Black and White - Free Tool",
         "format_desc": "Free {format} to black and white converter. Instant conversion, no upload, completely private. Perfect for printing and coloring pages."
     },
@@ -72,11 +72,29 @@
     },
     "pages": {
         "color_to_bw_title": "Convert Color Photos to Black and White",
-        "color_to_bw_desc": "Remove color from your photos to create classic black and white images. Perfect for printing documents, saving printer ink, or creating timeless photo effects.",
+        "color_to_bw_desc": "Remove color from your photos to create classic black and white images. Perfect for printing documents, saving printer ink (up to 60% savings), or creating timeless photo effects.",
         "coloring_title": "Convert Photos to Coloring Pages",
         "coloring_desc": "Transform any photo into a coloring page with our line art generator. Parents and teachers love it for creating custom coloring activities for kids.",
         "invert_title": "Invert Image Colors (Negative Effect)",
         "invert_desc": "Create negative images by inverting all colors. Useful for special effects, design projects, and artistic expression."
+    },
+    "formats": {
+        "jpg_intro": "JPG (or JPEG) is one of the most widely used image formats. Our converter maintains image quality while removing color information, perfect for photos and complex images.",
+        "jpg_feature_1": "Most compatible format across all devices",
+        "jpg_feature_2": "Best for photographs and detailed images",
+        "jpg_feature_3": "Smaller file sizes after conversion",
+        "png_intro": "PNG format supports transparency and lossless compression. When converting PNG to black and white, you can choose to preserve or remove transparency.",
+        "png_feature_1": "Supports transparent backgrounds",
+        "png_feature_2": "Lossless quality - no compression artifacts",
+        "png_feature_3": "Perfect for logos and graphics with transparency",
+        "webp_intro": "WebP is a modern image format that provides superior compression. Converting WebP to black and white reduces file size even further.",
+        "webp_feature_1": "Modern format with excellent compression",
+        "webp_feature_2": "Supported by all major browsers",
+        "webp_feature_3": "Smaller file sizes than JPG or PNG",
+        "heic_intro": "HEIC is Apple's efficient image format used by default on iPhones. Our tool automatically converts HEIC files for processing.",
+        "heic_feature_1": "Default format on iPhone and iPad",
+        "heic_feature_2": "Excellent compression efficiency",
+        "heic_feature_3": "Automatically converted for web compatibility"
     },
     "footer": {
         "tagline": "Free, fast, and private image processing",

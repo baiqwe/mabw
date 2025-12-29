@@ -47,7 +47,7 @@ export const useImageProcessor = () => {
                             break;
 
                         case 'coloring':
-                            applyLineArt(data, options.threshold || 128);
+                            applyLineArt(data, canvas.width, canvas.height, options.threshold || 100);
                             break;
 
                         case 'invert':
@@ -148,28 +148,63 @@ function applyGrayscale(data: Uint8ClampedArray, keepTransparency?: boolean) {
 }
 
 /**
- * Apply line art / edge detection
- * Uses simplified threshold-based approach
- * For better results, could implement Sobel operator
+ * Apply line art / edge detection using Sobel operator
+ * Detects edges (color boundaries) to create coloring page line art
+ * @param data - Pixel data array
+ * @param width - Image width
+ * @param height - Image height
+ * @param threshold - Edge detection sensitivity (50-150 recommended, lower = more lines)
  */
-function applyLineArt(data: Uint8ClampedArray, threshold: number) {
-    // First convert to grayscale
-    const grayData = new Uint8ClampedArray(data.length);
+function applyLineArt(data: Uint8ClampedArray, width: number, height: number, threshold: number) {
+    // 1. Convert to grayscale first
+    const grayData = new Uint8ClampedArray(width * height);
     for (let i = 0; i < data.length; i += 4) {
         const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-        grayData[i] = gray;
-        grayData[i + 1] = gray;
-        grayData[i + 2] = gray;
-        grayData[i + 3] = data[i + 3];
+        grayData[i / 4] = gray;
     }
 
-    // Apply threshold and invert (lines black, background white)
-    for (let i = 0; i < data.length; i += 4) {
-        const val = grayData[i] > threshold ? 255 : 0;
-        data[i] = val;
-        data[i + 1] = val;
-        data[i + 2] = val;
-        data[i + 3] = 255; // Line art is typically opaque
+    // 2. Sobel convolution kernels
+    // Gx: horizontal edge detection, Gy: vertical edge detection
+    const kernelX = [-1, 0, 1, -2, 0, 2, -1, 0, 1];
+    const kernelY = [-1, -2, -1, 0, 0, 0, 1, 2, 1];
+
+    const outputData = new Uint8ClampedArray(data.length);
+
+    // 3. Apply Sobel operator (skip border pixels for simplicity)
+    for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+            let pixelX = 0;
+            let pixelY = 0;
+
+            // Convolve 3x3 window
+            for (let ky = -1; ky <= 1; ky++) {
+                for (let kx = -1; kx <= 1; kx++) {
+                    const idx = ((y + ky) * width + (x + kx));
+                    const val = grayData[idx];
+                    const kernelIdx = (ky + 1) * 3 + (kx + 1);
+                    pixelX += val * kernelX[kernelIdx];
+                    pixelY += val * kernelY[kernelIdx];
+                }
+            }
+
+            // 4. Calculate gradient magnitude
+            const magnitude = Math.sqrt(pixelX * pixelX + pixelY * pixelY);
+
+            // 5. Threshold and invert: edges are black (0), background is white (255)
+            const isEdge = magnitude > threshold;
+            const finalColor = isEdge ? 0 : 255;
+
+            const idx = (y * width + x) * 4;
+            outputData[idx] = finalColor;     // R
+            outputData[idx + 1] = finalColor; // G
+            outputData[idx + 2] = finalColor; // B
+            outputData[idx + 3] = 255;        // Alpha (opaque)
+        }
+    }
+
+    // 6. Write processed data back to original array
+    for (let i = 0; i < data.length; i++) {
+        data[i] = outputData[i];
     }
 }
 

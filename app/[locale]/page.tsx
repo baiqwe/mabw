@@ -1,26 +1,8 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
 import ImageEditor from '@/components/feature/image-editor';
 import { Sparkles, Lock, Zap, Palette, Smartphone, Printer } from 'lucide-react';
-
-export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
-    const params = await props.params;
-    const { locale } = params;
-    const t = await getTranslations({ locale, namespace: 'metadata' });
-
-    return {
-        title: t('title'),
-        description: t('description'),
-        keywords: t('keywords'),
-        alternates: {
-            canonical: `/${locale}`,
-            languages: {
-                'en': '/en',
-                'zh': '/zh',
-            },
-        },
-    };
-}
 
 export default function HomePage() {
     return (
@@ -43,6 +25,7 @@ export default function HomePage() {
         </div>
     );
 }
+
 
 function HeroSection() {
     const t = useTranslations('hero');

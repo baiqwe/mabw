@@ -79,7 +79,7 @@ export default async function FormatToBWPage(props: { params: Promise<{ locale: 
                 <div className="container px-4 md:px-6">
                     <div className="max-w-3xl mx-auto prose prose-gray dark:prose-invert">
                         <h2>About {formatUpper} Format</h2>
-                        <FormatInfo format={format} />
+                        <FormatInfo format={format} locale={locale} />
                     </div>
                 </div>
             </section>
@@ -87,65 +87,19 @@ export default async function FormatToBWPage(props: { params: Promise<{ locale: 
     );
 }
 
-function FormatInfo({ format }: { format: string }) {
-    switch (format) {
-        case 'jpg':
-            return (
-                <div>
-                    <p>
-                        JPG (or JPEG) is one of the most widely used image formats. Our converter maintains
-                        image quality while removing color information, perfect for photos and complex images.
-                    </p>
-                    <ul>
-                        <li>Most compatible format across all devices</li>
-                        <li>Best for photographs and detailed images</li>
-                        <li>Smaller file sizes after conversion</li>
-                    </ul>
-                </div>
-            );
-        case 'png':
-            return (
-                <div>
-                    <p>
-                        PNG format supports transparency and lossless compression. When converting PNG to
-                        black and white, you can choose to preserve or remove transparency.
-                    </p>
-                    <ul>
-                        <li>Supports transparent backgrounds</li>
-                        <li>Lossless quality - no compression artifacts</li>
-                        <li>Perfect for logos and graphics with transparency</li>
-                    </ul>
-                </div>
-            );
-        case 'webp':
-            return (
-                <div>
-                    <p>
-                        WebP is a modern image format that provides superior compression. Converting WebP
-                        to black and white reduces file size even further.
-                    </p>
-                    <ul>
-                        <li>Modern format with excellent compression</li>
-                        <li>Supported by all major browsers</li>
-                        <li>Smaller file sizes than JPG or PNG</li>
-                    </ul>
-                </div>
-            );
-        case 'heic':
-            return (
-                <div>
-                    <p>
-                        HEIC is Apple's efficient image format used by default on iPhones. Our tool
-                        automatically converts HEIC files for processing.
-                    </p>
-                    <ul>
-                        <li>Default format on iPhone and iPad</li>
-                        <li>Excellent compression efficiency</li>
-                        <li>Automatically converted for web compatibility</li>
-                    </ul>
-                </div>
-            );
-        default:
-            return null;
-    }
+async function FormatInfo({ format, locale }: { format: string; locale: string }) {
+    const t = await getTranslations({ locale, namespace: 'formats' });
+
+    const formatKey = format as 'jpg' | 'png' | 'webp' | 'heic';
+
+    return (
+        <div>
+            <p>{t(`${formatKey}_intro`)}</p>
+            <ul>
+                <li>{t(`${formatKey}_feature_1`)}</li>
+                <li>{t(`${formatKey}_feature_2`)}</li>
+                <li>{t(`${formatKey}_feature_3`)}</li>
+            </ul>
+        </div>
+    );
 }

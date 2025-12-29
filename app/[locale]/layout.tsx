@@ -7,6 +7,7 @@ import { Footer } from "@/components/footer";
 import { ThemeProvider } from "next-themes";
 import { createClient } from "@/utils/supabase/server";
 import { Toaster } from "@/components/ui/toaster";
+import { SoftwareApplicationSchema } from "@/components/json-ld-schema";
 import { Geist } from "next/font/google";
 import "../globals.css";
 
@@ -69,6 +70,7 @@ export default async function LocaleLayout(props: {
     return (
         <html lang={locale} className={geistSans.className} suppressHydrationWarning>
             <body className="bg-background text-foreground">
+                <SoftwareApplicationSchema />
                 <NextIntlClientProvider messages={messages} locale={locale}>
                     <ThemeProvider
                         attribute="class"
