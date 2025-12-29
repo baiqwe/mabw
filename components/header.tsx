@@ -21,11 +21,15 @@ export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith("/dashboard");
 
-  // Main navigation items for Chinese Name Generator
+  // Detect current locale from pathname
+  const currentLocale = pathname?.split('/')[1] || 'en';
+  const localePrefix = `/${currentLocale}`;
+
+  // Main navigation items for EasyBW
   const mainNavItems: NavItem[] = [
-    { label: "Home", href: "/" },
-    { label: "Popular Names", href: "/product/popular-names" },
-    { label: "About", href: "/product/about" },
+    { label: "Home", href: localePrefix },
+    { label: "Coloring Pages", href: `${localePrefix}/photo-to-coloring-page` },
+    { label: "About", href: `${localePrefix}/about` },
   ];
 
   // Dashboard items - empty array as we don't want navigation items in dashboard
@@ -40,7 +44,7 @@ export default function Header({ user }: HeaderProps) {
         <div className="flex items-center">
           <Logo />
         </div>
-        
+
         {/* Centered Navigation */}
         <nav className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
           {navItems.map((item) => (
@@ -55,6 +59,24 @@ export default function Header({ user }: HeaderProps) {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* Language Switcher */}
+          <div className="hidden md:flex items-center gap-1 mr-2">
+            <Link
+              href={pathname?.replace(/^\/(en|zh)/, '/en') || '/en'}
+              className={`px-2 py-1 rounded text-sm ${currentLocale === 'en' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                }`}
+            >
+              EN
+            </Link>
+            <Link
+              href={pathname?.replace(/^\/(en|zh)/, '/zh') || '/zh'}
+              className={`px-2 py-1 rounded text-sm ${currentLocale === 'zh' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                }`}
+            >
+              中文
+            </Link>
+          </div>
+
           <ThemeSwitcher />
           {user ? (
             <div className="hidden md:flex items-center gap-2">
@@ -66,10 +88,10 @@ export default function Header({ user }: HeaderProps) {
               {!isDashboard && (
                 <>
                   <Button asChild size="sm" variant="default">
-                    <Link href="/profile">Profile</Link>
+                    <Link href={`${localePrefix}/profile`}>Profile</Link>
                   </Button>
                   <Button asChild size="sm" variant="outline">
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href={`${localePrefix}/dashboard`}>Dashboard</Link>
                   </Button>
                 </>
               )}
@@ -82,10 +104,10 @@ export default function Header({ user }: HeaderProps) {
           ) : (
             <div className="hidden md:flex gap-2">
               <Button asChild size="sm" variant="outline">
-                <Link href="/sign-in">Sign in</Link>
+                <Link href={`${localePrefix}/sign-in`}>Sign in</Link>
               </Button>
               <Button asChild size="sm">
-                <Link href="/sign-up">Sign up</Link>
+                <Link href={`${localePrefix}/sign-up`}>Sign up</Link>
               </Button>
             </div>
           )}

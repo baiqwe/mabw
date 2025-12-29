@@ -1,0 +1,101 @@
+{
+    "metadata": {
+        "title": "Free Image to Black and White Converter - EasyBW",
+        "description": "Convert your color photos to black and white instantly. Free online tool for grayscale conversion, line art, and coloring pages. Privacy-friendly, no upload required.",
+        "keywords": "black and white converter, image to grayscale, photo to coloring page, line art generator, print optimization",
+        "format_title": "Convert {format} to Black and White - Free Tool",
+        "format_desc": "Free {format} to black and white converter. Instant conversion, no upload, completely private. Perfect for printing and coloring pages."
+    },
+    "nav": {
+        "home": "Home",
+        "features": "Features",
+        "pricing": "Pricing",
+        "about": "About",
+        "sign_in": "Sign In",
+        "sign_up": "Sign Up",
+        "dashboard": "Dashboard",
+        "sign_out": "Sign Out"
+    },
+    "hero": {
+        "badge": "🖼️ Privacy-First Image Processing",
+        "title": "Convert Images to",
+        "title_highlight": "Black & White",
+        "subtitle": "Transform your photos instantly with our free, browser-based tool. No upload, no server, complete privacy. Perfect for printing, art, and coloring pages.",
+        "cta_free": "🎁 Try Free",
+        "cta_signin": "🔒 Sign In",
+        "cta_start": "🎯 Start Converting",
+        "feature_1": "100% Browser-based",
+        "feature_2": "Instant conversion",
+        "feature_3": "Multiple formats"
+    },
+    "uploader": {
+        "title": "Upload Your Image",
+        "drop_zone": "Drag & drop your image here, or click to browse",
+        "supported_formats": "Supported: JPG, PNG, WebP, HEIC",
+        "or": "or",
+        "browse": "Browse Files",
+        "processing": "Processing...",
+        "error_invalid": "Invalid file type. Please upload an image.",
+        "error_size": "File too large. Maximum size is 10MB."
+    },
+    "editor": {
+        "mode_label": "Conversion Mode:",
+        "mode_grayscale": "Grayscale",
+        "mode_coloring": "Line Art (Coloring Page)",
+        "mode_invert": "Invert Colors",
+        "threshold_label": "Line Thickness:",
+        "threshold_thin": "Thin",
+        "threshold_thick": "Thick",
+        "preview_before": "Before",
+        "preview_after": "After",
+        "download_label": "Download As:",
+        "download_png": "PNG (with transparency)",
+        "download_jpg": "JPG (smaller file)",
+        "button_download": "Download Image",
+        "button_reset": "Upload New Image"
+    },
+    "features": {
+        "title": "Why Choose EasyBW?",
+        "subtitle": "Professional image processing with complete privacy and zero cost.",
+        "feature_1_title": "🔒 Complete Privacy",
+        "feature_1_desc": "All processing happens in your browser. Your images never leave your device.",
+        "feature_2_title": "⚡ Instant Results",
+        "feature_2_desc": "Real-time conversion with adjustable parameters. See results immediately.",
+        "feature_3_title": "🎨 Multiple Modes",
+        "feature_3_desc": "Grayscale, line art for coloring, or color inversion. Perfect for any use case.",
+        "feature_4_title": "💰 100% Free",
+        "feature_4_desc": "No subscriptions, no credits, no limits. Professional tools, free forever.",
+        "feature_5_title": "📱 Works Everywhere",
+        "feature_5_desc": "Desktop, tablet, or mobile. Modern browsers supported.",
+        "feature_6_title": "🖨️ Print Optimized",
+        "feature_6_desc": "Save ink with optimized grayscale. Perfect for home and office printing."
+    },
+    "pages": {
+        "color_to_bw_title": "Convert Color Photos to Black and White",
+        "color_to_bw_desc": "Remove color from your photos to create classic black and white images. Perfect for printing documents, saving printer ink, or creating timeless photo effects.",
+        "coloring_title": "Convert Photos to Coloring Pages",
+        "coloring_desc": "Transform any photo into a coloring page with our line art generator. Parents and teachers love it for creating custom coloring activities for kids.",
+        "invert_title": "Invert Image Colors (Negative Effect)",
+        "invert_desc": "Create negative images by inverting all colors. Useful for special effects, design projects, and artistic expression."
+    },
+    "footer": {
+        "tagline": "Free, fast, and private image processing",
+        "product": "Product",
+        "resources": "Resources",
+        "legal": "Legal",
+        "link_features": "Features",
+        "link_pricing": "Pricing",
+        "link_about": "About",
+        "link_privacy": "Privacy Policy",
+        "link_terms": "Terms of Service",
+        "rights": "All rights reserved."
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "close": "Close"
+    }
+}
