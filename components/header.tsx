@@ -7,6 +7,8 @@ import { ThemeSwitcher } from "./theme-switcher";
 import { Logo } from "./logo";
 import { usePathname } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
+import { useTranslations } from "next-intl";
+import { useRouter, usePathname as useIntlPathname } from "@/i18n/routing";
 
 interface HeaderProps {
   user: any;
@@ -19,23 +21,34 @@ interface NavItem {
 
 export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const t = useTranslations('nav');
   const isDashboard = pathname?.startsWith("/dashboard");
 
-  // Detect current locale from pathname
-  const currentLocale = pathname?.split('/')[1] || 'en';
+  // 更可靠地检测当前 locale
+  const pathParts = pathname?.split('/') || [];
+  const currentLocale = (pathParts[1] === 'en' || pathParts[1] === 'zh') ? pathParts[1] : 'en';
   const localePrefix = `/${currentLocale}`;
 
-  // Main navigation items for EasyBW
+  // 获取不带 locale 前缀的路径（用于语言切换）
+  const getPathWithoutLocale = () => {
+    if (!pathname) return '/';
+    // 如果路径以 /en 或 /zh 开头，移除它
+    const withoutLocale = pathname.replace(/^\/(en|zh)/, '');
+    return withoutLocale || '/';
+  };
+
+  const pathWithoutLocale = getPathWithoutLocale();
+
+  // Main navigation items
   const mainNavItems: NavItem[] = [
-    { label: "Home", href: localePrefix },
-    { label: "Coloring Pages", href: `${localePrefix}/photo-to-coloring-page` },
-    { label: "About", href: `${localePrefix}/about` },
+    { label: t('home'), href: localePrefix },
+    { label: currentLocale === 'zh' ? '填色画' : 'Coloring Pages', href: `${localePrefix}/photo-to-coloring-page` },
+    { label: t('about'), href: `${localePrefix}/about` },
   ];
 
-  // Dashboard items - empty array as we don't want navigation items in dashboard
+  // Dashboard items
   const dashboardItems: NavItem[] = [];
-
-  // Choose which navigation items to show
   const navItems = isDashboard ? dashboardItems : mainNavItems;
 
   return (
@@ -59,19 +72,25 @@ export default function Header({ user }: HeaderProps) {
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* Language Switcher */}
+          {/* Language Switcher - 修复后的版本 */}
           <div className="hidden md:flex items-center gap-1 mr-2">
             <Link
-              href={pathname?.replace(/^\/(en|zh)/, '/en') || '/en'}
-              className={`px-2 py-1 rounded text-sm ${currentLocale === 'en' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
-                }`}
+              href={`/en${pathWithoutLocale}`}
+              className={`px-2 py-1 rounded text-sm transition-colors ${
+                currentLocale === 'en' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+              }`}
             >
               EN
             </Link>
             <Link
-              href={pathname?.replace(/^\/(en|zh)/, '/zh') || '/zh'}
-              className={`px-2 py-1 rounded text-sm ${currentLocale === 'zh' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
-                }`}
+              href={`/zh${pathWithoutLocale}`}
+              className={`px-2 py-1 rounded text-sm transition-colors ${
+                currentLocale === 'zh' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+              }`}
             >
               中文
             </Link>
@@ -97,21 +116,21 @@ export default function Header({ user }: HeaderProps) {
               )}
               <form action={signOutAction}>
                 <Button type="submit" variant="outline" size="sm">
-                  Sign out
+                  {t('sign_out')}
                 </Button>
               </form>
             </div>
           ) : (
             <div className="hidden md:flex gap-2">
               <Button asChild size="sm" variant="outline">
-                <Link href={`${localePrefix}/sign-in`}>Sign in</Link>
+                <Link href={`${localePrefix}/sign-in`}>{t('sign_in')}</Link>
               </Button>
               <Button asChild size="sm">
-                <Link href={`${localePrefix}/sign-up`}>Sign up</Link>
+                <Link href={`${localePrefix}/sign-up`}>{t('sign_up')}</Link>
               </Button>
             </div>
           )}
-          <MobileNav items={navItems} user={user} isDashboard={isDashboard} />
+          <MobileNav items={navItems} user={user} isDashboard={isDashboard} currentLocale={currentLocale} />
         </div>
       </div>
     </header>

@@ -11,14 +11,28 @@ import {
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { signOutAction } from "@/app/actions";
+import { usePathname } from "next/navigation";
 
 interface MobileNavProps {
   items: { label: string; href: string }[];
   user: any;
   isDashboard: boolean;
+  currentLocale?: string;
 }
 
-export function MobileNav({ items, user, isDashboard }: MobileNavProps) {
+export function MobileNav({ items, user, isDashboard, currentLocale = 'en' }: MobileNavProps) {
+  const pathname = usePathname();
+  const localePrefix = `/${currentLocale}`;
+
+  // 获取不带 locale 前缀的路径
+  const getPathWithoutLocale = () => {
+    if (!pathname) return '/';
+    const withoutLocale = pathname.replace(/^\/(en|zh)/, '');
+    return withoutLocale || '/';
+  };
+
+  const pathWithoutLocale = getPathWithoutLocale();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -29,8 +43,36 @@ export function MobileNav({ items, user, isDashboard }: MobileNavProps) {
       </SheetTrigger>
       <SheetContent side="left" className="flex flex-col">
         <SheetHeader>
-          <SheetTitle>Navigation</SheetTitle>
+          <SheetTitle>{currentLocale === 'zh' ? '导航' : 'Navigation'}</SheetTitle>
         </SheetHeader>
+
+        {/* Language Switcher for Mobile */}
+        <div className="flex items-center gap-2 mt-4 pb-4 border-b">
+          <span className="text-sm text-muted-foreground">
+            {currentLocale === 'zh' ? '语言:' : 'Language:'}
+          </span>
+          <Link
+            href={`/en${pathWithoutLocale}`}
+            className={`px-3 py-1.5 rounded text-sm transition-colors ${
+              currentLocale === 'en'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-muted text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            EN
+          </Link>
+          <Link
+            href={`/zh${pathWithoutLocale}`}
+            className={`px-3 py-1.5 rounded text-sm transition-colors ${
+              currentLocale === 'zh'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-muted text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            中文
+          </Link>
+        </div>
+
         <nav className="flex flex-col gap-4 mt-4">
           {items.map((item) => (
             <Link
@@ -51,26 +93,34 @@ export function MobileNav({ items, user, isDashboard }: MobileNavProps) {
               {!isDashboard && (
                 <>
                   <Button asChild variant="default" className="w-full">
-                    <Link href="/profile">Profile</Link>
+                    <Link href={`${localePrefix}/profile`}>
+                      {currentLocale === 'zh' ? '个人中心' : 'Profile'}
+                    </Link>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href={`${localePrefix}/dashboard`}>
+                      {currentLocale === 'zh' ? '控制台' : 'Dashboard'}
+                    </Link>
                   </Button>
                 </>
               )}
               <form action={signOutAction} className="w-full">
                 <Button type="submit" variant="outline" className="w-full">
-                  Sign out
+                  {currentLocale === 'zh' ? '退出登录' : 'Sign out'}
                 </Button>
               </form>
             </div>
           ) : (
             <div className="flex flex-col gap-2">
               <Button asChild variant="outline" className="w-full">
-                <Link href="/sign-in">Sign in</Link>
+                <Link href={`${localePrefix}/sign-in`}>
+                  {currentLocale === 'zh' ? '登录' : 'Sign in'}
+                </Link>
               </Button>
               <Button asChild variant="default" className="w-full">
-                <Link href="/sign-up">Sign up</Link>
+                <Link href={`${localePrefix}/sign-up`}>
+                  {currentLocale === 'zh' ? '注册' : 'Sign up'}
+                </Link>
               </Button>
             </div>
           )}

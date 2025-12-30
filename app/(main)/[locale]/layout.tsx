@@ -24,26 +24,79 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const messages = await getMessages({ locale }) as any;
 
     return {
-        title: messages.metadata.title,
+        // ✅ SEO 核心: metadataBase 用于生成绝对 URL
+        metadataBase: new URL('https://makebw.com'),
+        
+        title: {
+            default: messages.metadata.title,
+            template: '%s | MakeBW.com'
+        },
         description: messages.metadata.description,
         keywords: messages.metadata.keywords,
+        
+        // ✅ 作者和站点信息
+        authors: [{ name: 'Bai' }],
+        creator: 'Bai',
+        publisher: 'MakeBW.com',
+        
+        // ✅ Open Graph
         openGraph: {
             title: messages.metadata.title,
             description: messages.metadata.description,
             type: "website",
+            locale: locale === 'zh' ? 'zh_CN' : 'en_US',
+            url: `https://makebw.com/${locale}`,
+            siteName: 'MakeBW.com',
         },
+        
+        // ✅ Twitter Card
         twitter: {
             card: "summary_large_image",
             title: messages.metadata.title,
             description: messages.metadata.description,
         },
+        
+        // ✅ Canonical & 多语言 alternates
         alternates: {
             canonical: `/${locale}`,
             languages: {
                 'en': '/en',
                 'zh': '/zh',
+                'x-default': '/en',
             },
         },
+        
+        // ✅ Robots 配置 - 允许索引
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                'max-video-preview': -1,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
+        },
+        
+        // ✅ Favicon 和图标配置
+        icons: {
+            icon: [
+                { url: '/favicon.ico', sizes: 'any' },
+                { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+                { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+            ],
+            apple: [
+                { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+            ],
+        },
+        
+        // ✅ Web App Manifest
+        manifest: '/site.webmanifest',
+        
+        // ✅ 其他 SEO 相关
+        category: 'technology',
+        classification: 'Image Processing Tool',
     };
 }
 
@@ -76,7 +129,7 @@ export default async function LocaleLayout(props: {
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <div className="relative min-h-screen">
+                        <div className="relative min-h-screen flex flex-col">
                             <Header user={user} />
                             <main className="flex-1">{children}</main>
                             <Footer />

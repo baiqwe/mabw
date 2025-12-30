@@ -2,36 +2,39 @@
 
 import { Logo } from "./logo";
 import Link from "next/link";
-import { Github } from "lucide-react";
 import { usePathname } from "next/navigation";
-
-const footerLinks = [
-  {
-    title: "Product",
-    links: [
-      { label: "Features", href: "/#features" },
-      { label: "Pricing", href: "/#pricing" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Blog", href: "#blog" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
-    ],
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function Footer() {
   const pathname = usePathname();
+  const t = useTranslations('footer');
   const isDashboard = pathname?.startsWith("/dashboard");
+
+  // 检测当前 locale
+  const pathParts = pathname?.split('/') || [];
+  const currentLocale = (pathParts[1] === 'en' || pathParts[1] === 'zh') ? pathParts[1] : 'en';
+  const localePrefix = `/${currentLocale}`;
+
+  // 工具链接 - 内链建设核心
+  const toolLinks = [
+    { label: "Grayscale Converter", labelZh: "灰度转换", href: `${localePrefix}/color-to-black-and-white` },
+    { label: "Coloring Page Maker", labelZh: "填色画制作", href: `${localePrefix}/photo-to-coloring-page` },
+    { label: "Invert Colors", labelZh: "反色工具", href: `${localePrefix}/invert-colors` },
+  ];
+
+  // 格式链接 - 长尾词页面
+  const formatLinks = [
+    { label: "JPG to B&W", href: `${localePrefix}/jpg-to-black-and-white` },
+    { label: "PNG to B&W", href: `${localePrefix}/png-to-black-and-white` },
+    { label: "WebP to B&W", href: `${localePrefix}/webp-to-black-and-white` },
+    { label: "HEIC to B&W", href: `${localePrefix}/heic-to-black-and-white` },
+  ];
+
+  const legalLinks = [
+    { label: t('link_privacy'), href: `${localePrefix}/privacy` },
+    { label: t('link_terms'), href: `${localePrefix}/terms` },
+    { label: t('link_about'), href: `${localePrefix}/about` },
+  ];
 
   if (isDashboard) {
     return (
@@ -40,12 +43,7 @@ export function Footer() {
           <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
             <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
               Built by{" "}
-              <Link
-                href="https://Raphael.app"
-                className="font-medium underline underline-offset-4"
-              >
-                Raphael Starter
-              </Link>
+              <span className="font-medium">Bai</span>
             </p>
           </div>
         </div>
@@ -54,42 +52,82 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t">
-      <div className="container px-4 py-8 md:py-12">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6">
+    <footer className="border-t bg-muted/30">
+      <div className="container px-4 py-12 md:py-16">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
+          {/* Brand */}
           <div className="col-span-full lg:col-span-2">
             <Logo />
-            <p className="mt-4 text-sm text-muted-foreground">
-              Starter kit for your next project. Built with Next.js and
-              Creem.io.
+            <p className="mt-4 text-sm text-muted-foreground max-w-sm">
+              {t('tagline')}
+            </p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {currentLocale === 'zh' 
+                ? '🔒 所有图片处理均在浏览器本地完成，从不上传到服务器。' 
+                : '🔒 All images are processed locally in your browser. Never uploaded to any server.'}
             </p>
           </div>
-          <div className="col-span-2 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-4">
-            {footerLinks.map((group) => (
-              <div key={group.title} className="flex flex-col gap-3">
-                <h3 className="text-sm font-medium">{group.title}</h3>
-                <nav className="flex flex-col gap-2">
-                  {group.links.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-primary"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </nav>
-              </div>
-            ))}
+
+          {/* Tools - 工具内链 */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-semibold">
+              {currentLocale === 'zh' ? '转换工具' : 'Tools'}
+            </h3>
+            <nav className="flex flex-col gap-2">
+              {toolLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                >
+                  {currentLocale === 'zh' ? link.labelZh : link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Formats - 格式长尾词 */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-semibold">
+              {currentLocale === 'zh' ? '支持格式' : 'Formats'}
+            </h3>
+            <nav className="flex flex-col gap-2">
+              {formatLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Legal */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-semibold">{t('legal')}</h3>
+            <nav className="flex flex-col gap-2">
+              {legalLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Built by{" "}
-            <Link href="#" className="font-medium underline underline-offset-4">
-              Raphael Starter
-            </Link>
-            .
+
+        {/* Bottom */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
+          <p className="text-center text-sm text-muted-foreground md:text-left">
+            © {new Date().getFullYear()} MakeBW.com. {t('rights')}
+          </p>
+          <p className="text-center text-sm text-muted-foreground md:text-right">
+            Built by <span className="font-medium">Bai</span>
           </p>
         </div>
       </div>
