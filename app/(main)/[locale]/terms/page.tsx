@@ -1,28 +1,61 @@
-"use client";
-
-import { motion } from "framer-motion";
+import { getTranslations } from 'next-intl/server';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, FileText, Scale, AlertTriangle, CheckCircle, XCircle, Users } from "lucide-react";
+import { ArrowLeft, Scale, CheckCircle, AlertCircle } from "lucide-react";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 
-export default function TermsPage() {
+// ✅ Cloudflare Edge Runtime
+export const runtime = 'edge';
+
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const { locale } = params;
+    const isZh = locale === 'zh';
+
+    return {
+        title: isZh ? '服务条款 - MakeBW.com' : 'Terms of Service - MakeBW.com',
+        description: isZh 
+            ? 'MakeBW.com 的服务条款。了解使用我们免费图片处理工具的条款和条件。'
+            : 'Terms of Service for MakeBW.com. Learn about the terms and conditions for using our free image processing tool.',
+        alternates: {
+            canonical: `/${locale}/terms`,
+            languages: {
+                'en': '/en/terms',
+                'zh': '/zh/terms',
+            },
+        },
+    };
+}
+
+export default async function TermsPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
+    const { locale } = params;
+    const isZh = locale === 'zh';
+    const localePrefix = `/${locale}`;
+
+    const breadcrumbs = [
+        { name: isZh ? '首页' : 'Home', url: `https://makebw.com/${locale}` },
+        { name: isZh ? '服务条款' : 'Terms of Service', url: `https://makebw.com/${locale}/terms` },
+    ];
+
   return (
     <div className="min-h-screen bg-background">
+            <BreadcrumbSchema items={breadcrumbs} />
+
       {/* Header */}
       <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container px-4 md:px-6 py-4">
           <div className="flex items-center gap-4">
             <Button asChild variant="ghost" size="sm" className="gap-2">
-              <Link href="/">
+                            <Link href={localePrefix}>
                 <ArrowLeft className="h-4 w-4" />
-                Back to Home
+                                {isZh ? '返回首页' : 'Back to Home'}
               </Link>
             </Button>
             <div>
-              <h1 className="text-xl font-bold">Terms of Service</h1>
+                            <h1 className="text-xl font-bold">{isZh ? '服务条款' : 'Terms of Service'}</h1>
               <p className="text-sm text-muted-foreground">
-                Terms and conditions for using our service
+                                {isZh ? '最后更新：2025年1月' : 'Last updated: January 2025'}
               </p>
             </div>
           </div>
@@ -32,310 +65,207 @@ export default function TermsPage() {
       {/* Main Content */}
       <div className="container px-4 md:px-6 py-16">
         <div className="max-w-4xl mx-auto space-y-12">
-          {/* Hero Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center space-y-6"
-          >
-            <div className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary mb-4">
-              <Scale className="mr-2 h-4 w-4" />
-              Legal Terms
+                    {/* Hero */}
+                    <div className="text-center space-y-6">
+                        <div className="inline-flex items-center rounded-full px-4 py-2 text-sm bg-primary/10 text-primary">
+                            <Scale className="mr-2 h-5 w-5" />
+                            {isZh ? '法律条款' : 'Legal Terms'}
             </div>
-            <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Terms of Service
+                        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                            {isZh ? '服务条款' : 'Terms of Service'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              These terms govern your use of our Chinese name generation service. 
-              By using our service, you agree to these terms and conditions.
+                            {isZh 
+                                ? '使用 MakeBW.com 即表示您同意以下条款。请仔细阅读。'
+                                : 'By using MakeBW.com, you agree to these terms. Please read them carefully.'}
             </p>
-            <p className="text-sm text-muted-foreground">
-              <strong>Last updated:</strong> January 31, 2025
-            </p>
-          </motion.div>
+                    </div>
 
           {/* Key Points */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid gap-6 md:grid-cols-3"
-          >
-            <Card className="border-2">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mb-4">
-                  <CheckCircle className="h-6 w-6 text-green-600" />
+                    <div className="bg-green-50 dark:bg-green-950/30 rounded-2xl p-6 border border-green-200 dark:border-green-900">
+                        <h3 className="text-xl font-bold mb-4 text-green-700 dark:text-green-400">
+                            {isZh ? '简要概述' : 'Quick Summary'}
+                        </h3>
+                        <div className="space-y-3">
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                                <p className="text-muted-foreground">
+                                    {isZh 
+                                        ? '免费使用 - 核心功能完全免费，无隐藏费用'
+                                        : 'Free to use - Core features are completely free, no hidden charges'}
+                                </p>
                 </div>
-                <CardTitle className="text-lg">What You Can Do</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm">
-                  Use our service to generate Chinese names, save your favorites, and share your generated names with others.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center mb-4">
-                  <XCircle className="h-6 w-6 text-red-600" />
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                                <p className="text-muted-foreground">
+                                    {isZh 
+                                        ? '您的图片 - 转换后的图片完全属于您'
+                                        : 'Your images - Converted images belong entirely to you'}
+                                </p>
                 </div>
-                <CardTitle className="text-lg">What You Cannot Do</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm">
-                  Misuse our service, violate others' rights, or use generated names for illegal or harmful purposes.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                  <Users className="h-6 w-6 text-blue-600" />
+                            <div className="flex items-start gap-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                                <p className="text-muted-foreground">
+                                    {isZh 
+                                        ? '隐私保护 - 图片在本地处理，从不上传'
+                                        : 'Privacy protected - Images are processed locally, never uploaded'}
+                                </p>
+                            </div>
+                        </div>
                 </div>
-                <CardTitle className="text-lg">Our Commitment</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm">
-                  Provide reliable service, protect your privacy, and maintain the quality of our name generation.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
 
+                    {/* Sections */}
+                    <div className="space-y-8">
           {/* Service Description */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="space-y-8"
-          >
             <div className="bg-muted/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                <FileText className="h-6 w-6 text-primary" />
-                Our Service
+                            <h3 className="text-2xl font-bold mb-4">
+                                {isZh ? '1. 服务说明' : '1. Service Description'}
               </h3>
-              
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Chinese Name Generator is an AI-powered platform that creates personalized Chinese names based on 
-                  your preferences, personality traits, and cultural considerations. Our service includes:
-                </p>
-                
-                <ul className="space-y-2">
-                  <li>• <strong>Free Generation:</strong> Limited daily name generation for non-registered users</li>
-                  <li>• <strong>Premium Features:</strong> Unlimited generation, personalized matching, and name saving for registered users</li>
-                  <li>• <strong>Cultural Education:</strong> Detailed meanings, pronunciations, and cultural context for generated names</li>
-                  <li>• <strong>Personal Collections:</strong> Save and manage your favorite generated names</li>
+                                    {isZh 
+                                        ? 'MakeBW.com 是一个免费的在线图片处理工具，提供以下功能：'
+                                        : 'MakeBW.com is a free online image processing tool that provides:'}
+                                </p>
+                                <ul className="list-disc list-inside space-y-2 ml-4">
+                                    <li>{isZh ? '彩色图片转灰度/黑白' : 'Color image to grayscale/black and white conversion'}</li>
+                                    <li>{isZh ? '照片转填色画线稿' : 'Photo to coloring page line art'}</li>
+                                    <li>{isZh ? '图片颜色反转（负片效果）' : 'Image color inversion (negative effect)'}</li>
+                                    <li>{isZh ? '支持 JPG、PNG、WebP、HEIC 格式' : 'Support for JPG, PNG, WebP, HEIC formats'}</li>
                 </ul>
+                                <p>
+                                    {isZh 
+                                        ? '所有图片处理都在您的浏览器本地完成，不需要上传到我们的服务器。'
+                                        : 'All image processing happens locally in your browser, no upload to our servers required.'}
+                                </p>
               </div>
             </div>
-          </motion.div>
 
-          {/* User Responsibilities */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="space-y-8"
-          >
+                        {/* Acceptable Use */}
             <div className="bg-muted/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Your Responsibilities</h3>
-              
-              <div className="grid gap-6 md:grid-cols-2">
-                <div>
-                  <h4 className="font-semibold mb-3 text-green-700">Acceptable Use</h4>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Use the service for personal, educational, or cultural purposes</li>
-                    <li>• Provide accurate information when creating an account</li>
-                    <li>• Respect intellectual property rights</li>
-                    <li>• Keep your account credentials secure</li>
-                    <li>• Report any technical issues or misuse</li>
-                  </ul>
+                            <h3 className="text-2xl font-bold mb-4">
+                                {isZh ? '2. 可接受的使用' : '2. Acceptable Use'}
+                            </h3>
+                            <div className="space-y-4 text-muted-foreground">
+                                <p>{isZh ? '您可以：' : 'You may:'}</p>
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    <div className="flex items-start gap-2">
+                                        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                                        <span>{isZh ? '将处理后的图片用于个人项目' : 'Use processed images for personal projects'}</span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                                        <span>{isZh ? '将处理后的图片用于商业项目' : 'Use processed images for commercial projects'}</span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                                        <span>{isZh ? '分享处理后的图片' : 'Share processed images'}</span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                                        <span>{isZh ? '无限次使用服务' : 'Use the service unlimited times'}</span>
                 </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-3 text-red-700">Prohibited Activities</h4>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Using generated names for fraudulent purposes</li>
-                    <li>• Attempting to reverse-engineer our algorithms</li>
-                    <li>• Sharing account credentials with others</li>
-                    <li>• Using automated tools to bulk-generate names</li>
-                    <li>• Violating any applicable laws or regulations</li>
-                  </ul>
                 </div>
               </div>
             </div>
-          </motion.div>
 
-          {/* Intellectual Property */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-            className="space-y-8"
-          >
+                        {/* Restrictions */}
             <div className="bg-muted/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Intellectual Property and Generated Names</h3>
-              
+                            <h3 className="text-2xl font-bold mb-4">
+                                {isZh ? '3. 使用限制' : '3. Restrictions'}
+                            </h3>
               <div className="space-y-4 text-muted-foreground">
-                <div>
-                  <h4 className="font-semibold mb-3 text-foreground">Your Rights to Generated Names</h4>
-                  <p>
-                    You have the right to use any Chinese names generated through our service for personal purposes. 
-                    However, please note that traditional Chinese names are part of cultural heritage and cannot be 
-                    exclusively owned by any individual.
-                  </p>
+                                <p>{isZh ? '您不得：' : 'You may not:'}</p>
+                                <div className="space-y-3">
+                                    <div className="flex items-start gap-3">
+                                        <AlertCircle className="w-5 h-5 text-amber-500 mt-0.5" />
+                                        <span>{isZh ? '尝试逆向工程或复制本网站' : 'Attempt to reverse engineer or copy this website'}</span>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <AlertCircle className="w-5 h-5 text-amber-500 mt-0.5" />
+                                        <span>{isZh ? '使用自动化工具大规模访问服务' : 'Use automated tools to access the service at scale'}</span>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <AlertCircle className="w-5 h-5 text-amber-500 mt-0.5" />
+                                        <span>{isZh ? '处理您无权使用的图片' : 'Process images you don\'t have rights to use'}</span>
                 </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-3 text-foreground">Our Intellectual Property</h4>
-                  <p>
-                    The Chinese Name Generator platform, including our AI algorithms, website design, brand elements, 
-                    and proprietary technology, remains our intellectual property. You may not copy, modify, or 
-                    redistribute our platform or technology.
-                  </p>
+                                    <div className="flex items-start gap-3">
+                                        <AlertCircle className="w-5 h-5 text-amber-500 mt-0.5" />
+                                        <span>{isZh ? '用于任何非法目的' : 'Use for any illegal purposes'}</span>
                 </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-3 text-foreground">Cultural Respect</h4>
-                  <p>
-                    We encourage respectful use of Chinese names and understanding of their cultural significance. 
-                    Generated names should be used with appreciation for Chinese culture and traditions.
-                  </p>
                 </div>
               </div>
             </div>
-          </motion.div>
 
-          {/* Service Availability */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.0 }}
-            className="space-y-8"
-          >
+                        {/* Intellectual Property */}
             <div className="bg-muted/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                <AlertTriangle className="h-6 w-6 text-amber-500" />
-                Service Availability and Disclaimers
+                            <h3 className="text-2xl font-bold mb-4">
+                                {isZh ? '4. 知识产权' : '4. Intellectual Property'}
               </h3>
-              
               <div className="space-y-4 text-muted-foreground">
-                <div>
-                  <h4 className="font-semibold mb-2 text-foreground">Service Availability</h4>
-                  <p>
-                    While we strive to maintain 24/7 service availability, we cannot guarantee uninterrupted access. 
-                    We may temporarily suspend service for maintenance, updates, or due to circumstances beyond our control.
-                  </p>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-2 text-foreground">AI-Generated Content</h4>
-                  <p>
-                    Our Chinese names are generated by AI technology. While we strive for cultural accuracy and appropriateness, 
-                    we recommend consulting with native speakers or cultural experts for important use cases.
-                  </p>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-2 text-foreground">No Warranties</h4>
-                  <p>
-                    Our service is provided "as is" without warranties of any kind. We do not guarantee the suitability 
-                    of generated names for any specific purpose or their acceptance in all cultural contexts.
+                                <p>
+                                    {isZh 
+                                        ? '您上传的原始图片的版权归您或原始版权所有者所有。处理后生成的图片同样归您所有。'
+                                        : 'Copyright of your original uploaded images remains with you or the original copyright holder. Processed images generated also belong to you.'}
+                                </p>
+                                <p>
+                                    {isZh 
+                                        ? 'MakeBW.com 的网站设计、代码和品牌是我们的知识产权，受版权保护。'
+                                        : 'MakeBW.com website design, code, and branding are our intellectual property and are protected by copyright.'}
                   </p>
                 </div>
               </div>
-            </div>
-          </motion.div>
 
-          {/* Payment Terms */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.2 }}
-            className="space-y-8"
-          >
+                        {/* Disclaimer */}
             <div className="bg-muted/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Payment and Subscription Terms</h3>
-              
-              <div className="grid gap-6 md:grid-cols-2">
-                <div>
-                  <h4 className="font-semibold mb-3">Premium Subscriptions</h4>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Monthly and annual subscription options available</li>
-                    <li>• Automatic renewal unless cancelled</li>
-                    <li>• Access to unlimited name generation</li>
-                    <li>• Premium features and personalization</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-3">Cancellation and Refunds</h4>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Cancel anytime through your account settings</li>
-                    <li>• Refunds processed according to our refund policy</li>
-                    <li>• No refunds for partially used subscription periods</li>
-                    <li>• Free trial cancellations take effect immediately</li>
+                            <h3 className="text-2xl font-bold mb-4">
+                                {isZh ? '5. 免责声明' : '5. Disclaimer'}
+                            </h3>
+                            <div className="space-y-4 text-muted-foreground">
+                                <p>
+                                    {isZh 
+                                        ? '本服务按"原样"提供，不作任何明示或暗示的保证。我们不保证：'
+                                        : 'This service is provided "as is" without any express or implied warranties. We do not guarantee:'}
+                                </p>
+                                <ul className="list-disc list-inside space-y-2 ml-4">
+                                    <li>{isZh ? '服务将始终可用或不间断' : 'The service will always be available or uninterrupted'}</li>
+                                    <li>{isZh ? '转换结果将满足您的特定需求' : 'Conversion results will meet your specific needs'}</li>
+                                    <li>{isZh ? '服务没有任何错误或漏洞' : 'The service is free from errors or bugs'}</li>
                   </ul>
                 </div>
               </div>
-            </div>
-          </motion.div>
 
           {/* Changes to Terms */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.4 }}
-            className="space-y-8"
-          >
             <div className="bg-muted/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Changes to These Terms</h3>
-              
-              <div className="space-y-4 text-muted-foreground">
-                <p>
-                  We may update these Terms of Service from time to time to reflect changes in our service, 
-                  legal requirements, or business practices. When we make changes:
-                </p>
-                
-                <ul className="space-y-2">
-                  <li>• We will update the "Last updated" date at the top of this page</li>
-                  <li>• For significant changes, we will notify users via email or service notifications</li>
-                  <li>• Continued use of our service after changes constitutes acceptance of new terms</li>
-                  <li>• You can always find the current version of our terms on this page</li>
-                </ul>
+                            <h3 className="text-2xl font-bold mb-4">
+                                {isZh ? '6. 条款变更' : '6. Changes to Terms'}
+                            </h3>
+                            <div className="text-muted-foreground">
+                                <p>
+                                    {isZh 
+                                        ? '我们保留随时修改这些条款的权利。重大变更将在本页面公布。继续使用本服务即表示您接受修改后的条款。'
+                                        : 'We reserve the right to modify these terms at any time. Significant changes will be posted on this page. Continued use of the service means you accept the modified terms.'}
+                                </p>
+                            </div>
               </div>
             </div>
-          </motion.div>
 
-          {/* Contact Information */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.6 }}
-            className="text-center bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-2xl p-8"
-          >
-            <h3 className="text-2xl font-bold mb-4">Questions About These Terms?</h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              If you have any questions about these Terms of Service or need clarification about your rights and responsibilities, 
-              please contact us. We're here to help ensure you understand and can comply with these terms.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild variant="outline">
-                <Link href="/contact">
-                  Contact Support
-                </Link>
-              </Button>
+                    {/* Contact */}
+                    <div className="text-center bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-2xl p-8">
+                        <h3 className="text-2xl font-bold mb-4">
+                            {isZh ? '有疑问？' : 'Questions?'}
+                        </h3>
+                        <p className="text-muted-foreground mb-6">
+                            {isZh 
+                                ? '如果您对这些条款有任何疑问，请随时联系我们。'
+                                : 'If you have any questions about these terms, feel free to contact us.'}
+                        </p>
               <Button asChild>
-                <Link href="/">
-                  Start Using Service
+                            <Link href={localePrefix}>
+                                {isZh ? '返回首页' : 'Back to Home'}
                 </Link>
               </Button>
             </div>
-          </motion.div>
         </div>
       </div>
     </div>

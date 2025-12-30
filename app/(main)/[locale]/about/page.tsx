@@ -2,8 +2,11 @@ import { getTranslations } from 'next-intl/server';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Heart, Shield, Zap, Globe, CheckCircle } from "lucide-react";
+import { ArrowLeft, Heart, Shield, Zap, CheckCircle } from "lucide-react";
 import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
+
+// ✅ Cloudflare Edge Runtime
+export const runtime = 'edge';
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
     const params = await props.params;
