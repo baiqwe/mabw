@@ -129,43 +129,9 @@ export default async function LocaleLayout(props: {
     // MVP: 暂时不使用 Supabase，用户设为 null
     const user = null;
 
-    // JSON-LD Structured Data - 内联到 HTML 中，避免 hydration 问题
-    const softwareApplicationSchema = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "MakeBW - Image to Black and White Converter",
-        "description": "Free online tool to convert images to black and white. Supports grayscale conversion, line art generation for coloring pages, and color inversion.",
-        "applicationCategory": "MultimediaApplication",
-        "operatingSystem": "Web Browser",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "featureList": [
-            "Grayscale conversion",
-            "Line art generation for coloring pages",
-            "Color inversion",
-            "HEIC file support",
-            "Privacy-first browser processing",
-            "No upload required"
-        ],
-        "screenshot": "https://makebw.com/og-image.png",
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "1250"
-        }
-    });
-
     return (
         <html lang={locale} className={geistSans.className} suppressHydrationWarning>
             <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: softwareApplicationSchema }}
-                    suppressHydrationWarning
-                />
                 <NextIntlClientProvider messages={messages} locale={locale}>
                     <ThemeProvider
                         attribute="class"
