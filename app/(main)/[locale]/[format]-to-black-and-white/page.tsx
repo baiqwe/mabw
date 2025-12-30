@@ -145,10 +145,32 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 
     const t = await getTranslations({ locale, namespace: 'metadata' });
     const formatUpper = format.toUpperCase();
+    const isZh = locale === 'zh';
+    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
 
     return {
         title: t('format_title', { format: formatUpper }),
         description: t('format_desc', { format: formatUpper }),
+        openGraph: {
+            title: t('format_title', { format: formatUpper }),
+            description: t('format_desc', { format: formatUpper }),
+            type: 'website',
+            url: `https://makebw.com/${locale}/${format}-to-black-and-white`,
+            images: [
+                {
+                    url: ogImage,
+                    width: 512,
+                    height: 512,
+                    alt: isZh ? `MakeBW ${formatUpper} 转黑白工具` : `MakeBW ${formatUpper} to B&W Converter`,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: t('format_title', { format: formatUpper }),
+            description: t('format_desc', { format: formatUpper }),
+            images: [ogImage],
+        },
         alternates: {
             canonical: `/${locale}/${format}-to-black-and-white`,
             languages: {

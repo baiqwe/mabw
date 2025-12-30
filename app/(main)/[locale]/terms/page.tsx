@@ -11,12 +11,35 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const params = await props.params;
     const { locale } = params;
     const isZh = locale === 'zh';
+    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const title = isZh ? '服务条款 - MakeBW.com' : 'Terms of Service - MakeBW.com';
+    const description = isZh 
+        ? 'MakeBW.com 的服务条款。了解使用我们免费图片处理工具的条款和条件。'
+        : 'Terms of Service for MakeBW.com. Learn about the terms and conditions for using our free image processing tool.';
 
     return {
-        title: isZh ? '服务条款 - MakeBW.com' : 'Terms of Service - MakeBW.com',
-        description: isZh 
-            ? 'MakeBW.com 的服务条款。了解使用我们免费图片处理工具的条款和条件。'
-            : 'Terms of Service for MakeBW.com. Learn about the terms and conditions for using our free image processing tool.',
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            type: 'website',
+            url: `https://makebw.com/${locale}/terms`,
+            images: [
+                {
+                    url: ogImage,
+                    width: 512,
+                    height: 512,
+                    alt: isZh ? 'MakeBW 服务条款' : 'MakeBW Terms of Service',
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [ogImage],
+        },
         alternates: {
             canonical: `/${locale}/terms`,
             languages: {

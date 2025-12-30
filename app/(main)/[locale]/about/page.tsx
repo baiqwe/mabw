@@ -13,12 +13,35 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const { locale } = params;
 
     const isZh = locale === 'zh';
+    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const title = isZh ? '关于我们 - MakeBW.com' : 'About Us - MakeBW.com';
+    const description = isZh 
+        ? 'MakeBW 是由开发者 Bai 创建的免费图片黑白转换工具。我们致力于提供最快、最安全的浏览器端图片处理方案。'
+        : 'MakeBW is a free image-to-black-and-white converter created by developer Bai. We are committed to providing the fastest and most secure browser-based image processing.';
 
     return {
-        title: isZh ? '关于我们 - MakeBW.com' : 'About Us - MakeBW.com',
-        description: isZh 
-            ? 'MakeBW 是由开发者 Bai 创建的免费图片黑白转换工具。我们致力于提供最快、最安全的浏览器端图片处理方案。'
-            : 'MakeBW is a free image-to-black-and-white converter created by developer Bai. We are committed to providing the fastest and most secure browser-based image processing.',
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            type: 'website',
+            url: `https://makebw.com/${locale}/about`,
+            images: [
+                {
+                    url: ogImage,
+                    width: 512,
+                    height: 512,
+                    alt: isZh ? 'MakeBW 关于我们' : 'MakeBW About Us',
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [ogImage],
+        },
         alternates: {
             canonical: `/${locale}/about`,
             languages: {

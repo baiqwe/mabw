@@ -11,9 +11,32 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const { locale } = params;
     const t = await getTranslations({ locale, namespace: 'pages' });
 
+    const isZh = locale === 'zh';
+    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+
     return {
         title: t('coloring_title'),
         description: t('coloring_desc'),
+        openGraph: {
+            title: t('coloring_title'),
+            description: t('coloring_desc'),
+            type: 'website',
+            url: `https://makebw.com/${locale}/photo-to-coloring-page`,
+            images: [
+                {
+                    url: ogImage,
+                    width: 512,
+                    height: 512,
+                    alt: isZh ? 'MakeBW 填色画生成器' : 'MakeBW Coloring Page Generator',
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: t('coloring_title'),
+            description: t('coloring_desc'),
+            images: [ogImage],
+        },
         alternates: {
             canonical: `/${locale}/photo-to-coloring-page`,
             languages: {

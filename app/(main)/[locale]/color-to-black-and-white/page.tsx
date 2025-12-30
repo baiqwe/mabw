@@ -11,9 +11,32 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const { locale } = params;
     const t = await getTranslations({ locale, namespace: 'pages' });
 
+    const isZh = locale === 'zh';
+    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+
     return {
         title: t('color_to_bw_title'),
         description: t('color_to_bw_desc'),
+        openGraph: {
+            title: t('color_to_bw_title'),
+            description: t('color_to_bw_desc'),
+            type: 'website',
+            url: `https://makebw.com/${locale}/color-to-black-and-white`,
+            images: [
+                {
+                    url: ogImage,
+                    width: 512,
+                    height: 512,
+                    alt: isZh ? 'MakeBW 灰度转换器' : 'MakeBW Grayscale Converter',
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: t('color_to_bw_title'),
+            description: t('color_to_bw_desc'),
+            images: [ogImage],
+        },
         alternates: {
             canonical: `/${locale}/color-to-black-and-white`,
             languages: {

@@ -11,9 +11,32 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const { locale } = params;
     const t = await getTranslations({ locale, namespace: 'pages' });
 
+    const isZh = locale === 'zh';
+    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+
     return {
         title: t('invert_title'),
         description: t('invert_desc'),
+        openGraph: {
+            title: t('invert_title'),
+            description: t('invert_desc'),
+            type: 'website',
+            url: `https://makebw.com/${locale}/invert-colors`,
+            images: [
+                {
+                    url: ogImage,
+                    width: 512,
+                    height: 512,
+                    alt: isZh ? 'MakeBW 反色工具' : 'MakeBW Color Inverter',
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: t('invert_title'),
+            description: t('invert_desc'),
+            images: [ogImage],
+        },
         alternates: {
             canonical: `/${locale}/invert-colors`,
             languages: {

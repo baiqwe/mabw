@@ -12,12 +12,35 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const params = await props.params;
     const { locale } = params;
     const isZh = locale === 'zh';
+    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const title = isZh ? '隐私政策 - MakeBW.com' : 'Privacy Policy - MakeBW.com';
+    const description = isZh 
+        ? 'MakeBW 的隐私政策。所有图片处理都在您的浏览器本地完成，从不上传到服务器。了解我们如何保护您的隐私。'
+        : 'MakeBW Privacy Policy. All image processing happens locally in your browser, never uploaded to servers. Learn how we protect your privacy.';
 
     return {
-        title: isZh ? '隐私政策 - MakeBW.com' : 'Privacy Policy - MakeBW.com',
-        description: isZh 
-            ? 'MakeBW 的隐私政策。所有图片处理都在您的浏览器本地完成，从不上传到服务器。了解我们如何保护您的隐私。'
-            : 'MakeBW Privacy Policy. All image processing happens locally in your browser, never uploaded to servers. Learn how we protect your privacy.',
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            type: 'website',
+            url: `https://makebw.com/${locale}/privacy`,
+            images: [
+                {
+                    url: ogImage,
+                    width: 512,
+                    height: 512,
+                    alt: isZh ? 'MakeBW 隐私政策' : 'MakeBW Privacy Policy',
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [ogImage],
+        },
         alternates: {
             canonical: `/${locale}/privacy`,
             languages: {

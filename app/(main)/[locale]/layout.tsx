@@ -39,7 +39,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
         creator: 'Bai',
         publisher: 'MakeBW.com',
         
-        // ✅ Open Graph
+        // ✅ Open Graph - 添加图片
         openGraph: {
             title: messages.metadata.title,
             description: messages.metadata.description,
@@ -47,13 +47,22 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             locale: locale === 'zh' ? 'zh_CN' : 'en_US',
             url: `https://makebw.com/${locale}`,
             siteName: 'MakeBW.com',
+            images: [
+                {
+                    url: 'https://makebw.com/web-app-manifest-512x512.png',
+                    width: 512,
+                    height: 512,
+                    alt: 'MakeBW - Free Image to Black and White Converter',
+                },
+            ],
         },
         
-        // ✅ Twitter Card
+        // ✅ Twitter Card - 添加图片
         twitter: {
             card: "summary_large_image",
             title: messages.metadata.title,
             description: messages.metadata.description,
+            images: ['https://makebw.com/web-app-manifest-512x512.png'],
         },
         
         // ✅ Canonical & 多语言 alternates
@@ -79,15 +88,18 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             },
         },
         
-        // ✅ Favicon 和图标配置
+        // ✅ Favicon 和图标配置 - 匹配实际文件
         icons: {
             icon: [
                 { url: '/favicon.ico', sizes: 'any' },
-                { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-                { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+                { url: '/favicon.svg', type: 'image/svg+xml' },
+                { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
             ],
             apple: [
                 { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+            ],
+            other: [
+                { rel: 'mask-icon', url: '/favicon.svg', color: '#000000' },
             ],
         },
         
