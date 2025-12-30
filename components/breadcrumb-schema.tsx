@@ -94,3 +94,4 @@ export function HowToSchema({ name, description, steps }: HowToSchemaProps) {
   );
 }
 
+

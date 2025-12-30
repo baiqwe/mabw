@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import ImageEditor from '@/components/feature/image-editor';
 import { Sparkles, Lock, Zap, Palette, Smartphone, Printer } from 'lucide-react';
 
@@ -19,6 +20,9 @@ export default function HomePage() {
 
             {/* Features Section */}
             <FeaturesSection />
+
+            {/* Supported Formats Section - 内链建设 */}
+            <SupportedFormatsSection />
 
             {/* CTA Section */}
             <CTASection />
@@ -115,6 +119,95 @@ function FeaturesSection() {
                                 </div>
                             );
                         })}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function SupportedFormatsSection() {
+    const pathname = usePathname();
+    const pathParts = pathname?.split('/') || [];
+    const locale = (pathParts[1] === 'en' || pathParts[1] === 'zh') ? pathParts[1] : 'en';
+    const localePrefix = `/${locale}`;
+
+    const formats = [
+        { name: 'JPG', href: `${localePrefix}/jpg-to-black-and-white`, desc: locale === 'zh' ? '最常用的照片格式' : 'Most common photo format' },
+        { name: 'PNG', href: `${localePrefix}/png-to-black-and-white`, desc: locale === 'zh' ? '支持透明背景' : 'Supports transparency' },
+        { name: 'WebP', href: `${localePrefix}/webp-to-black-and-white`, desc: locale === 'zh' ? '现代高效格式' : 'Modern efficient format' },
+        { name: 'HEIC', href: `${localePrefix}/heic-to-black-and-white`, desc: locale === 'zh' ? 'iPhone 默认格式' : 'iPhone default format' },
+    ];
+
+    return (
+        <section className="py-20 bg-background">
+            <div className="container px-4 md:px-6">
+                <div className="mx-auto max-w-6xl space-y-12">
+                    <div className="text-center space-y-4">
+                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                            {locale === 'zh' ? '支持的图片格式' : 'Supported Image Formats'}
+                        </h2>
+                        <p className="mx-auto max-w-3xl text-muted-foreground text-lg">
+                            {locale === 'zh' 
+                                ? '支持所有主流图片格式，一键转换为黑白。点击下方格式查看详细说明。'
+                                : 'Support for all major image formats. Convert to black and white with one click. Click any format below for details.'}
+                        </p>
+                    </div>
+
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {formats.map((format) => (
+                            <a
+                                key={format.name}
+                                href={format.href}
+                                className="group rounded-2xl bg-muted/30 p-6 hover:bg-muted/50 transition-all hover:shadow-lg border border-border hover:border-primary/50"
+                            >
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
+                                            {format.name}
+                                        </h3>
+                                        <span className="text-muted-foreground group-hover:text-primary transition-colors">→</span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground">
+                                        {format.desc}
+                                    </p>
+                                    <div className="pt-2">
+                                        <span className="text-sm font-medium text-primary group-hover:underline">
+                                            {locale === 'zh' ? '转换为黑白 →' : 'Convert to B&W →'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+
+                    {/* Related Tools */}
+                    <div className="pt-8 border-t">
+                        <div className="text-center space-y-6">
+                            <h3 className="text-2xl font-bold">
+                                {locale === 'zh' ? '更多工具' : 'More Tools'}
+                            </h3>
+                            <div className="flex flex-wrap justify-center gap-4">
+                                <a
+                                    href={`${localePrefix}/photo-to-coloring-page`}
+                                    className="px-6 py-3 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors font-medium"
+                                >
+                                    {locale === 'zh' ? '填色画生成器' : 'Coloring Page Maker'}
+                                </a>
+                                <a
+                                    href={`${localePrefix}/color-to-black-and-white`}
+                                    className="px-6 py-3 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors font-medium"
+                                >
+                                    {locale === 'zh' ? '灰度转换器' : 'Grayscale Converter'}
+                                </a>
+                                <a
+                                    href={`${localePrefix}/invert-colors`}
+                                    className="px-6 py-3 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors font-medium"
+                                >
+                                    {locale === 'zh' ? '反色工具' : 'Invert Colors'}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
