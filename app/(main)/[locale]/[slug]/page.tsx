@@ -10,6 +10,18 @@ export const runtime = 'edge';
 const supportedFormats = ['jpg', 'png', 'webp', 'heic'] as const;
 type SupportedFormat = typeof supportedFormats[number];
 
+// 辅助函数：从 slug 解析 format
+function getFormatFromSlug(slug: string): SupportedFormat | null {
+    const match = slug.match(/^([a-z0-9]+)-to-black-and-white$/);
+    if (!match) return null;
+    
+    const format = match[1];
+    if (supportedFormats.includes(format as SupportedFormat)) {
+        return format as SupportedFormat;
+    }
+    return null;
+}
+
 // 格式详细信息
 const formatDetails: Record<SupportedFormat, {
     fullName: string;
@@ -135,11 +147,13 @@ const formatDetails: Record<SupportedFormat, {
     },
 };
 
-export async function generateMetadata(props: { params: Promise<{ locale: string; format: string }> }) {
+export async function generateMetadata(props: { params: Promise<{ locale: string; slug: string }> }) {
     const params = await props.params;
-    const { locale, format } = params;
+    const { locale, slug } = params;
 
-    if (!supportedFormats.includes(format as SupportedFormat)) {
+    // 从 slug 解析 format
+    const format = getFormatFromSlug(slug);
+    if (!format) {
         return {};
     }
 
@@ -155,7 +169,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             title: t('format_title', { format: formatUpper }),
             description: t('format_desc', { format: formatUpper }),
             type: 'website',
-            url: `https://makebw.com/${locale}/${format}-to-black-and-white`,
+            url: `https://makebw.com/${locale}/${slug}`,
             images: [
                 {
                     url: ogImage,
@@ -172,33 +186,34 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             images: [ogImage],
         },
         alternates: {
-            canonical: `/${locale}/${format}-to-black-and-white`,
+            canonical: `/${locale}/${slug}`,
             languages: {
-                'en': `/en/${format}-to-black-and-white`,
-                'zh': `/zh/${format}-to-black-and-white`,
+                'en': `/en/${slug}`,
+                'zh': `/zh/${slug}`,
             },
         },
     };
 }
 
-export default async function FormatToBWPage(props: { params: Promise<{ locale: string; format: string }> }) {
+export default async function FormatToBWPage(props: { params: Promise<{ locale: string; slug: string }> }) {
     const params = await props.params;
-    const { locale, format } = params;
+    const { locale, slug } = params;
 
-    if (!supportedFormats.includes(format as SupportedFormat)) {
+    // 1. 解析 format，如果 slug 不符合格式（例如不是 xxx-to-black-and-white），则返回 404
+    const format = getFormatFromSlug(slug);
+    if (!format) {
         notFound();
     }
 
     const t = await getTranslations({ locale, namespace: 'formats' });
     const formatUpper = format.toUpperCase();
-    const formatKey = format as SupportedFormat;
-    const details = formatDetails[formatKey];
+    const details = formatDetails[format];
     const isZh = locale === 'zh';
 
-    // 面包屑
+    // 面包屑 - 使用 slug
     const breadcrumbs = [
         { name: isZh ? '首页' : 'Home', url: `https://makebw.com/${locale}` },
-        { name: `${formatUpper} to B&W`, url: `https://makebw.com/${locale}/${format}-to-black-and-white` },
+        { name: `${formatUpper} to B&W`, url: `https://makebw.com/${locale}/${slug}` },
     ];
 
     // FAQ
