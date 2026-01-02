@@ -30,6 +30,9 @@ export default async function HomeStaticContent({ locale }: HomeStaticContentPro
             {/* Supported Formats Section */}
             <SupportedFormatsSection locale={locale} />
 
+            {/* FAQ Section - Added for GSC 'How to' optimization */}
+            <FAQSection isZh={isZh} />
+
             {/* CTA Section */}
             <CTASection isZh={isZh} locale={locale} />
         </>
@@ -45,10 +48,10 @@ function WhatSection({ isZh }: { isZh: boolean }) {
                         <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                             {isZh ? '什么是 MakeBW？' : 'What is MakeBW?'}
                         </h2>
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                             {isZh
-                                ? 'MakeBW 是一个完全免费的在线图片处理工具，帮助您将彩色图片转换为黑白、创建填色画，或反转颜色。'
-                                : 'MakeBW is a completely free online image processing tool that helps you convert color images to black and white, create coloring pages, or invert colors.'}
+                                ? '正在寻找免费的图片转黑白工具？MakeBW 是最好的在线黑白制作器，可在浏览器中即时处理图像。无论您是想将照片变成填色画，还是想了解如何将图像转换为黑白以进行打印，我们的工具都能安全地处理。'
+                                : 'Looking for a free color to black and white converter? MakeBW is the best online black and white maker that processes images instantly in your browser. Whether you want to turn a photo into a coloring page or learn how to convert image to black and white for printing, our tool handles it all securely.'}
                         </p>
                     </div>
 
@@ -446,6 +449,64 @@ function SupportedFormatsSection({ locale }: { locale: string }) {
                                 </Link>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function FAQSection({ isZh }: { isZh: boolean }) {
+    const faqs = isZh ? [
+        {
+            q: "如何将图片转换为黑白？",
+            a: "1. 上传您的照片到 MakeBW。\n2. 选择'灰度'模式或调整阈值滑块。\n3. 点击下载。就是这么简单！所有处理都在浏览器中完成，无需上传服务器。"
+        },
+        {
+            q: "MakeBW 是免费的吗？",
+            a: "是的，MakeBW 是完全免费的黑白制作工具。没有隐藏费用，没有水印，也不需要注册。"
+        },
+        {
+            q: "可以将照片变成填色画吗？",
+            a: "当然可以！只需选择'填色画'模式，我们的智能算法会自动提取线条，生成清晰的黑白线稿，非常适合打印给孩子填色。"
+        }
+    ] : [
+        {
+            q: "How to convert image to black and white?",
+            a: "1. Upload your photo to MakeBW.\n2. Choose 'Grayscale' mode or adjust the threshold slider.\n3. Click Download. It's that simple! All processing happens in your browser, ensuring 100% privacy."
+        },
+        {
+            q: "Is MakeBW free?",
+            a: "Yes, MakeBW is a free online color to black and white converter. No hidden fees, no watermarks, and no registration required."
+        },
+        {
+            q: "Can I turn a photo into a coloring page?",
+            a: "Absolutely! Just select 'Coloring Page' mode. Our smart algorithm automatically extracts line art to create clear black and white coloring pages perfect for printing."
+        }
+    ];
+
+    return (
+        <section className="py-20 bg-background border-t">
+            <div className="container px-4 md:px-6">
+                <div className="max-w-4xl mx-auto space-y-12">
+                    <div className="text-center space-y-4">
+                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                            {isZh ? '常见问题' : 'Frequently Asked Questions'}
+                        </h2>
+                        <p className="text-lg text-muted-foreground">
+                            {isZh ? '了解更多关于图片黑白转换的信息' : 'Learn more about converting images to black and white'}
+                        </p>
+                    </div>
+
+                    <div className="grid gap-6">
+                        {faqs.map((faq, idx) => (
+                            <div key={idx} className="bg-muted/30 rounded-lg p-6 space-y-3">
+                                <h3 className="text-xl font-bold">{faq.q}</h3>
+                                <div className="text-muted-foreground whitespace-pre-line leading-relaxed">
+                                    {faq.a}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
