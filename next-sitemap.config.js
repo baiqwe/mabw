@@ -3,7 +3,7 @@ module.exports = {
     siteUrl: process.env.SITE_URL || 'https://makebw.com',
     generateRobotsTxt: true,
     generateIndexSitemap: false,
-    exclude: ['/api/*', '/_next/*', '/server-sitemap.xml', '/icon.svg', '/apple-icon.png'],
+    exclude: ['/api/*', '/_next/*', '/server-sitemap.xml', '/icon.svg', '/apple-icon.png', '/_auth-pages/*'],
 
     // Generate alternate language links
     alternateRefs: [
