@@ -3,6 +3,9 @@ import { createClient } from "@/utils/supabase/server";
 import Replicate from "replicate";
 import { deductCredits } from "@/utils/credits";
 
+// Required for Cloudflare Pages deployment
+export const runtime = 'edge';
+
 export const maxDuration = 60; // 1 minute timeout
 
 export async function POST(request: NextRequest) {
