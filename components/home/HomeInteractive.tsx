@@ -8,9 +8,10 @@ import ImageEditor from '@/components/feature/image-editor';
 
 interface HomeInteractiveProps {
     onShowStaticContent: (show: boolean) => void;
+    user?: any;
 }
 
-export default function HomeInteractive({ onShowStaticContent }: HomeInteractiveProps) {
+export default function HomeInteractive({ onShowStaticContent, user }: HomeInteractiveProps) {
     const [imageUploaded, setImageUploaded] = useState(false);
     const [uploadedImageSrc, setUploadedImageSrc] = useState<string>('');
 

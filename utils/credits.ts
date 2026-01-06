@@ -19,7 +19,29 @@ export async function getUserCredits(userId: string) {
 
     if (error) {
         if (error.code === 'PGRST116') {
-            // Customer not found, try to create one or return default
+            // Customer not found, try to create one if user exists in Auth
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (user && user.id === userId && user.email) {
+                const { data: newCustomer, error: createError } = await supabase
+                    .from('customers')
+                    .insert({
+                        user_id: userId,
+                        email: user.email,
+                        credits: 30, // Default signup bonus
+                        creem_customer_id: `auto_${userId}`,
+                        metadata: { source: 'auto_recovery' }
+                    })
+                    .select()
+                    .single();
+
+                if (!createError && newCustomer) {
+                    return { credits: newCustomer.credits, customer: newCustomer };
+                } else {
+                    // Fail silently but safely defaults will be returned
+                }
+            }
+
             return { credits: 0, customer: null };
         }
         throw new CreditError(error.message);
