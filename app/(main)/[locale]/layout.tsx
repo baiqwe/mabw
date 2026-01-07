@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Geist } from "next/font/google";
 import { SoftwareApplicationSchema } from "@/components/json-ld-schema";
 import { GoogleAnalytics } from "@/components/google-analytics";
+import { createClient } from "@/utils/supabase/server";
 import "../../globals.css";
 
 // ✅ 必须添加这一行，让前端页面兼容 Cloudflare Edge
@@ -128,8 +129,9 @@ export default async function LocaleLayout(props: {
 
     const messages = await getMessages({ locale });
 
-    // MVP: 暂时不使用 Supabase，用户设为 null
-    const user = null;
+    // 从 Supabase 获取用户认证状态
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
     return (
         <html lang={locale} className={geistSans.className} suppressHydrationWarning>

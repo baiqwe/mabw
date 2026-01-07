@@ -78,8 +78,8 @@ export default function Header({ user }: HeaderProps) {
             <Link
               href={`/en${pathWithoutLocale}`}
               className={`px-2 py-1 rounded text-sm transition-colors ${currentLocale === 'en'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
             >
               EN
@@ -87,8 +87,8 @@ export default function Header({ user }: HeaderProps) {
             <Link
               href={`/zh${pathWithoutLocale}`}
               className={`px-2 py-1 rounded text-sm transition-colors ${currentLocale === 'zh'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
             >
               中文
@@ -98,21 +98,9 @@ export default function Header({ user }: HeaderProps) {
           <ThemeSwitcher />
           {user ? (
             <div className="hidden md:flex items-center gap-2">
-              {isDashboard && (
-                <span className="hidden sm:inline text-sm text-muted-foreground">
-                  {user.email}
-                </span>
-              )}
-              {!isDashboard && (
-                <>
-                  <Button asChild size="sm" variant="default">
-                    <Link href={`${localePrefix}/profile`}>Profile</Link>
-                  </Button>
-                  <Button asChild size="sm" variant="outline">
-                    <Link href={`${localePrefix}/dashboard`}>Dashboard</Link>
-                  </Button>
-                </>
-              )}
+              <span className="text-sm text-muted-foreground">
+                {user.email}
+              </span>
               <form action={signOutAction}>
                 <Button type="submit" variant="outline" size="sm">
                   {t('sign_out')}

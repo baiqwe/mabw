@@ -53,21 +53,19 @@ export function MobileNav({ items, user, isDashboard, currentLocale = 'en' }: Mo
           </span>
           <Link
             href={`/en${pathWithoutLocale}`}
-            className={`px-3 py-1.5 rounded text-sm transition-colors ${
-              currentLocale === 'en'
+            className={`px-3 py-1.5 rounded text-sm transition-colors ${currentLocale === 'en'
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground hover:text-foreground'
-            }`}
+              }`}
           >
             EN
           </Link>
           <Link
             href={`/zh${pathWithoutLocale}`}
-            className={`px-3 py-1.5 rounded text-sm transition-colors ${
-              currentLocale === 'zh'
+            className={`px-3 py-1.5 rounded text-sm transition-colors ${currentLocale === 'zh'
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground hover:text-foreground'
-            }`}
+              }`}
           >
             中文
           </Link>
@@ -89,20 +87,6 @@ export function MobileNav({ items, user, isDashboard, currentLocale = 'en' }: Mo
             <div className="flex flex-col gap-2">
               {user.email && (
                 <p className="text-sm text-muted-foreground">{user.email}</p>
-              )}
-              {!isDashboard && (
-                <>
-                  <Button asChild variant="default" className="w-full">
-                    <Link href={`${localePrefix}/profile`}>
-                      {currentLocale === 'zh' ? '个人中心' : 'Profile'}
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full">
-                    <Link href={`${localePrefix}/dashboard`}>
-                      {currentLocale === 'zh' ? '控制台' : 'Dashboard'}
-                    </Link>
-                  </Button>
-                </>
               )}
               <form action={signOutAction} className="w-full">
                 <Button type="submit" variant="outline" className="w-full">
