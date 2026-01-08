@@ -19,7 +19,12 @@ export default async function SignUp(props: {
   const signUpWithGoogle = async () => {
     "use server";
     const supabase = await createClient();
-    const origin = process.env.NEXT_PUBLIC_SITE_URL;
+
+    // 动态获取当前域名，支持多域名部署
+    const headersList = await import('next/headers').then(m => m.headers());
+    const host = headersList.get('host') || '';
+    const protocol = host.includes('localhost') ? 'http' : 'https';
+    const origin = `${protocol}://${host}`;
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
