@@ -27,7 +27,7 @@ export default async function SignUp(props: {
         redirectTo: `${origin}/auth/callback`,
         queryParams: {
           access_type: "offline",
-          prompt: "consent",
+          prompt: "select_account",
         },
       },
     });

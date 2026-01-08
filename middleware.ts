@@ -3,14 +3,13 @@ import { NextResponse, type NextRequest } from 'next/server'
 import createIntlMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
 
-// Create the internationalization middleware
 const intlMiddleware = createIntlMiddleware(routing)
 
 export async function middleware(request: NextRequest) {
-  // First, run the intl middleware to get the response with locale handling
+  // 1. 先运行 intl 中间件，获取基础 Response (包含语言 Cookie 和重定向逻辑)
   let response = intlMiddleware(request)
 
-  // Create a Supabase client for session management
+  // 2. 初始化 Supabase 客户端
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -20,13 +19,14 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
+          // 同时更新 request 和 response
+          // 更新 request 是为了让后续逻辑能读到最新 Cookie
+          cookiesToSet.forEach(({ name, value }) => {
             request.cookies.set(name, value)
           })
-          // Update the response with cookies
-          response = NextResponse.next({
-            request,
-          })
+
+          // 更新 response 是为了写入浏览器
+          // 关键点：我们直接修改 intl 返回的那个 response 对象，而不是创建新的
           cookiesToSet.forEach(({ name, value, options }) => {
             response.cookies.set(name, value, options)
           })
@@ -35,22 +35,14 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // IMPORTANT: This refreshes the session if expired
-  // and sets the cookies on the response
-  const { data: { user } } = await supabase.auth.getUser()
-
-  // Re-run intl middleware with the request that now has updated cookies
-  response = intlMiddleware(request)
-
-  // Copy over any auth cookies that were set
-  const supabaseCookies = request.cookies.getAll().filter(c => c.name.startsWith('sb-'))
-  supabaseCookies.forEach(cookie => {
-    response.cookies.set(cookie.name, cookie.value)
-  })
+  // 3. 刷新 Session (这会触发上面的 setAll)
+  // 重要：不要在这里写 user 变量的逻辑判断，只负责刷新 Cookie
+  await supabase.auth.getUser()
 
   return response
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)', '/(en|zh)/:path*']
+  // 排除 api, _next, 静态资源，以及 auth/callback (新位置)
+  matcher: ['/((?!api|_next|_vercel|auth/callback|.*\\..*).*)', '/(en|zh)/:path*']
 }

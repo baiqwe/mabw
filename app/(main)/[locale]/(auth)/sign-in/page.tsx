@@ -25,7 +25,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
         redirectTo: `${origin}/auth/callback`,
         queryParams: {
           access_type: "offline",
-          prompt: "consent",
+          prompt: "select_account",
         },
       },
     });
