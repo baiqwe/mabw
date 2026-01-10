@@ -8,6 +8,22 @@ const nextConfig: NextConfig = {
     appIsrStatus: false,
   },
 
+  // Allow external images from Replicate
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'replicate.delivery',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.replicate.delivery',
+        pathname: '/**',
+      },
+    ],
+  },
+
   // Configure webpack to ignore the external folder
   webpack: (config: any) => {
     config.watchOptions = {

@@ -30,11 +30,19 @@ const STYLES = [
     }
 ];
 
+const SIZE_OPTIONS = [
+    { id: "a4", name: "A4", desc: "210×297mm", icon: "📄" },
+    { id: "letter", name: "Letter", desc: "8.5×11in", icon: "📝" },
+    { id: "square", name: "Square", desc: "1:1 ratio", icon: "⬜" },
+    { id: "a3", name: "A3", desc: "297×420mm", icon: "📰" },
+];
+
 export default function CreateClient({ user }: { user: any }) {
-    const { credits, spendCredits } = useCredits();
+    const { credits, spendCredits, refetchCredits } = useCredits();
 
     const [prompt, setPrompt] = useState("");
     const [selectedStyle, setSelectedStyle] = useState(STYLES[0].id);
+    const [selectedSize, setSelectedSize] = useState(SIZE_OPTIONS[0].id);
     const [uploadedImage, setUploadedImage] = useState<string | null>(null);
     const [resultImage, setResultImage] = useState<string | null>(null);
     const [isGenerating, setIsGenerating] = useState(false);
@@ -63,11 +71,9 @@ export default function CreateClient({ user }: { user: any }) {
         setError(null);
 
         try {
-            // 1. Spend credits (Optimistic or strict check)
-            // In Phase 2 we will move this logic to the backend API transaction
-            // For now we check client side but the API will enforce it.
+            // 2. Call Generation API
+            console.log("Calling generation API...");
 
-            // 2. Call Generation API (Stub for Phase 1)
             const response = await fetch("/api/ai/generate", {
                 method: "POST",
                 headers: {
@@ -77,27 +83,36 @@ export default function CreateClient({ user }: { user: any }) {
                     image: uploadedImage,
                     prompt: prompt,
                     style: selectedStyle,
+                    size: selectedSize,
                 }),
             });
 
             if (!response.ok) {
+                const errorData = await response.json();
+                console.error("API Error:", errorData);
                 if (response.status === 402) {
-                    // Payment required
                     throw new Error("Insufficient credits");
                 }
-                throw new Error("Generation failed");
+                // 显示详细错误信息（包括 details）
+                const errorMsg = errorData.details
+                    ? `${errorData.error}: ${errorData.details}`
+                    : (errorData.error || "Generation failed");
+                throw new Error(errorMsg);
             }
 
             const data = await response.json();
+            console.log("Generation success:", data);
+
             if (data.url) {
                 setResultImage(data.url);
                 // Refresh credits
+                await refetchCredits();
             } else {
-                throw new Error("No image returned");
+                throw new Error("No image returned from server");
             }
 
         } catch (err) {
-            console.error(err);
+            console.error("Generation error:", err);
             setError(err instanceof Error ? err.message : "Failed to generate");
         } finally {
             setIsGenerating(false);
@@ -170,6 +185,27 @@ export default function CreateClient({ user }: { user: any }) {
                         </p>
                     </Card>
 
+                    {/* Size Selector */}
+                    <Card className="p-6 space-y-4">
+                        <h3 className="font-semibold text-lg">1.5 Choose Size</h3>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            {SIZE_OPTIONS.map((size) => (
+                                <button
+                                    key={size.id}
+                                    onClick={() => setSelectedSize(size.id)}
+                                    className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${selectedSize === size.id
+                                        ? "border-primary bg-primary/5"
+                                        : "border-muted hover:border-primary/50"
+                                        }`}
+                                >
+                                    <span className="text-xl mb-1">{size.icon}</span>
+                                    <span className="font-medium text-sm">{size.name}</span>
+                                    <span className="text-xs text-muted-foreground">{size.desc}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </Card>
+
                     {/* Prompt Input */}
                     <Card className="p-6 space-y-4">
                         <h3 className="font-semibold text-lg">2. Describe (Optional)</h3>
@@ -238,12 +274,14 @@ export default function CreateClient({ user }: { user: any }) {
                                 <div className="space-y-6">
                                     {/* Original */}
                                     <div className="relative aspect-video w-full rounded-lg overflow-hidden border bg-muted/50 group">
-                                        <Image
-                                            src={uploadedImage}
-                                            alt="Original"
-                                            fill
-                                            className="object-contain"
-                                        />
+                                        {uploadedImage && typeof uploadedImage === 'string' && (
+                                            <Image
+                                                src={uploadedImage}
+                                                alt="Original"
+                                                fill
+                                                className="object-contain"
+                                            />
+                                        )}
                                         <div className="absolute top-2 left-2 bg-black/50 text-white px-2 py-1 text-xs rounded">Original</div>
                                         <Button
                                             variant="secondary"
@@ -265,7 +303,7 @@ export default function CreateClient({ user }: { user: any }) {
 
                                     {/* Result */}
                                     <div className="relative aspect-video w-full rounded-lg overflow-hidden border-2 border-primary/20 bg-muted/20 min-h-[300px] flex items-center justify-center">
-                                        {resultImage ? (
+                                        {resultImage && typeof resultImage === 'string' ? (
                                             <Image
                                                 src={resultImage}
                                                 alt="Generated Result"

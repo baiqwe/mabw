@@ -52,7 +52,8 @@
         "download_png": "PNG (with transparency)",
         "download_jpg": "JPG (smaller file)",
         "button_download": "Download Image",
-        "button_reset": "Upload New Image"
+        "button_reset": "Upload New Image",
+        "processing": "Processing..."
     },
     "features": {
         "title": "Why Choose MakeBW?",

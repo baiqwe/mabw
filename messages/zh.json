@@ -52,7 +52,8 @@
         "download_png": "PNG（保留透明度）",
         "download_jpg": "JPG（文件更小）",
         "button_download": "下载图片",
-        "button_reset": "上传新图片"
+        "button_reset": "上传新图片",
+        "processing": "处理中..."
     },
     "features": {
         "title": "为什么选择 MakeBW？",
