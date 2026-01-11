@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import ImageEditor from '@/components/feature/image-editor';
 import { Printer, FileDown, DollarSign, CheckCircle, Camera, FileText } from 'lucide-react';
 import { BreadcrumbSchema, FAQSchema, HowToSchema } from '@/components/breadcrumb-schema';
+import { SoftwareApplicationSchema } from '@/components/json-ld-schema';
 
 // ✅ Cloudflare Edge Runtime
 export const runtime = 'edge';
@@ -97,6 +98,7 @@ export default async function ColorToBWPage(props: { params: Promise<{ locale: s
                 description={isZh ? '使用 MakeBW 免费在线工具，4步将彩色照片转换为经典黑白效果。' : 'Use MakeBW free online tool to convert color photos to classic black and white in 4 steps.'}
                 steps={howToSteps}
             />
+            <SoftwareApplicationSchema locale={locale} />
 
             {/* Hero */}
             <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
