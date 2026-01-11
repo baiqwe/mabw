@@ -1,16 +1,34 @@
-import { createHmac } from "crypto";
+// Edge-compatible Webhook signature verification using Web Crypto API
 
-export function verifyCreemWebhookSignature(
+export async function verifyCreemWebhookSignature(
   payload: string,
   signature: string,
   secret: string
-): boolean {
+): Promise<boolean> {
   try {
-    // Create HMAC SHA256 hash
-    const hmac = createHmac("sha256", secret);
-    const calculatedSignature = hmac.update(payload).digest("hex");
+    // Encode the secret and payload
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(secret);
+    const payloadData = encoder.encode(payload);
 
-    // Compare signatures using timing-safe comparison
+    // Import the secret as a CryptoKey
+    const key = await crypto.subtle.importKey(
+      "raw",
+      keyData,
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+
+    // Sign the payload
+    const signatureBuffer = await crypto.subtle.sign("HMAC", key, payloadData);
+
+    // Convert to hex string
+    const calculatedSignature = Array.from(new Uint8Array(signatureBuffer))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    // Timing-safe comparison
     return timingSafeEqual(signature, calculatedSignature);
   } catch (error) {
     console.error("Error verifying webhook signature:", error);

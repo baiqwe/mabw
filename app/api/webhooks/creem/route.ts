@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     // Verify the webhook signature
     if (
       !signature ||
-      !verifyCreemWebhookSignature(body, signature, CREEM_WEBHOOK_SECRET)
+      !(await verifyCreemWebhookSignature(body, signature, CREEM_WEBHOOK_SECRET))
     ) {
       console.error("Invalid webhook signature");
       return new NextResponse("Invalid signature", { status: 401 });
