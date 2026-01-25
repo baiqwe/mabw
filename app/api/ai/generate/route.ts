@@ -1,90 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
-import Replicate from "replicate";
 import { CREDITS_PER_GENERATION } from "@/config/credit-packs";
 
 // Required for Cloudflare Pages deployment
 export const runtime = 'edge';
 export const maxDuration = 60; // 1 minute timeout
 
-// Models
-const BLIP_MODEL = "salesforce/blip:2e1dddc8621f72155f24cf2e0adbde548458d3cab9f00c8ee51a7a82c3bdf9ac";
-const CONTROLNET_MODEL = "jagilley/controlnet-canny:aff48af9c68d162388d230a2ab003f68d2638d88307bdaf1c2f1ac95079c9613";
+// OpenRouter Nano Banana Model
+const NANO_BANANA_MODEL = "google/gemini-2.5-flash-image";
 
+// Style-specific prompts for line art generation
 interface StyleConfig {
-    finalPrompt: string;
-    a_prompt: string;
-    n_prompt: string;
-    low_threshold: number;
-    high_threshold: number;
+    prompt: string;
 }
-
-const DEFAULT_STYLE: StyleConfig = {
-    finalPrompt: "coloring book line art, thick bold black marker lines, vector style, pure white background, minimal details, no shading",
-    a_prompt: "best quality, heavy thick borders, smooth curves, vector art, coloring page for kids",
-    n_prompt: "broken lines, thin lines, sketch, scratching, noise, dust, dots, shading, shadows, grey, gradient, filled areas, texture, realistic, photo, color, text, watermark, ui, interface, words, typography",
-    low_threshold: 80,
-    high_threshold: 180
-};
 
 const STYLES: Record<string, StyleConfig> = {
     'coloring-page': {
-        finalPrompt: "children's coloring book page, very thick bold black outlines, simple smooth vector lines, pure white background, isolated subject, ready to color",
-        a_prompt: "best quality, 8k, thick bold lines, hollow shapes, kids coloring page, printable, high contrast",
-        n_prompt: "grey, shading, shadows, filled, texture, realistic, photo, color, details, background noise, messy lines, scratchy, text, ui, words",
-        low_threshold: 100, // High threshold to remove noise
-        high_threshold: 200
+        prompt: "将这张图片转换成儿童涂色书风格的线稿。要求：纯黑白、粗线条、简洁干净、无阴影填充、纯白背景、适合打印涂色。"
     },
     'sketch': {
-        finalPrompt: "pencil sketch drawing, artistic linework, detailed outlines, structural lines",
-        a_prompt: "best quality, artistic lines, fine details, sketch style",
-        n_prompt: "color, painting, filled areas, photo realistic",
-        low_threshold: 40,
-        high_threshold: 120
+        prompt: "将这张图片转换成铅笔素描风格的线稿。要求：保留细节、艺术感的线条、有层次感。"
     },
     'line-art': {
-        finalPrompt: "professional line art illustration, clean bold ink lines, vector style, white background",
-        a_prompt: "best quality, fine ink lines, professional illustration, smooth",
-        n_prompt: "color, shading, gradient, filled areas, grey, noise, messy",
-        low_threshold: 60,
-        high_threshold: 150
+        prompt: "将这张图片转换成专业的线稿插画。要求：干净的墨线、矢量风格、白色背景、清晰的轮廓。"
     }
 };
 
-/**
- * Extracts a valid URL from Replicate output, handling FileOutput objects and arrays.
- */
-function extractReplicateUrl(output: any): string | null {
-    const extract = (item: any): string | null => {
-        if (!item) return null;
-        if (typeof item === 'string') return item;
-
-        // Handle Replicate SDK FileOutput object
-        if (typeof item === 'object') {
-            const str = String(item);
-            if (str && str.startsWith('http')) return str;
-            if (typeof item.url === 'string') return item.url;
-            if (typeof item.href === 'string') return item.href;
-        }
-        return null;
-    };
-
-    if (!output) return null;
-
-    if (Array.isArray(output) && output.length > 0) {
-        // For ControlNet, output[0] is the detected edge map (what we want)
-        // output[1] is the stylized generation
-        return extract(output[0]);
-    }
-
-    return extract(output);
-}
+const DEFAULT_STYLE: StyleConfig = {
+    prompt: "将这张图片转换成纯黑白的线稿手绘画，粗线条，涂色书风格，无阴影，纯白背景。"
+};
 
 export async function POST(request: NextRequest) {
     const supabase = await createClient();
 
     try {
-        const { image, prompt, style, size } = await request.json();
+        const { image, prompt, style } = await request.json();
 
         // 1. Authentication
         const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -97,8 +47,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "请上传图片", code: "MISSING_IMAGE" }, { status: 400 });
         }
 
-        if (!process.env.REPLICATE_API_TOKEN) {
-            console.error("REPLICATE_API_TOKEN is not set");
+        if (!process.env.OPENROUTER_API_KEY) {
+            console.error("OPENROUTER_API_KEY is not set");
             return NextResponse.json({ error: "服务配置错误", code: "CONFIG_ERROR" }, { status: 500 });
         }
 
@@ -122,102 +72,132 @@ export async function POST(request: NextRequest) {
             }, { status: 402 });
         }
 
-        // 4. Call AI Services
+        // 4. Call OpenRouter Nano Banana API
         try {
-            const replicate = new Replicate({
-                auth: process.env.REPLICATE_API_TOKEN,
-            });
-
-            // Check image size (approximate)
-            const imageSizeBytes = typeof image === 'string' ? Math.round(image.length * 0.75) : 0;
-            if (imageSizeBytes > 10 * 1024 * 1024) {
-                throw new Error("Image too large (max 10MB)");
-            }
-
-            // --- Step 1: Image Recognition (BLIP) ---
-            console.log("=== STEP 1: Image Recognition ===");
-            let imageDescription = "";
-            try {
-                const blipOutput = await replicate.run(BLIP_MODEL, {
-                    input: { image, task: "image_captioning" }
-                });
-                imageDescription = String(blipOutput || "");
-                console.log("Image description:", imageDescription);
-            } catch (blipError) {
-                console.warn("BLIP failed, utilizing generic prompt:", blipError);
-            }
-
-            // --- Step 2: Line Art Generation (ControlNet Canny) ---
-            console.log("=== STEP 2: Line Art Generation ===");
-
             // Get style configuration or default
             const config = STYLES[style] || DEFAULT_STYLE;
-            let { finalPrompt } = config;
+            let finalPrompt = config.prompt;
 
-            // Integrate BLIP description
-            if (imageDescription?.trim()) {
-                const desc = imageDescription.trim();
-                // Replace specific keywords in the finalPrompt based on the style
-                if (finalPrompt.includes("coloring book")) {
-                    finalPrompt = finalPrompt.replace("coloring book", `coloring book of ${desc}`);
-                } else if (finalPrompt.includes("pencil sketch")) {
-                    finalPrompt = finalPrompt.replace("pencil sketch", `pencil sketch of ${desc}`);
-                } else if (finalPrompt.includes("line art")) {
-                    finalPrompt = finalPrompt.replace("line art", `line art of ${desc}`);
-                } else {
-                    // Fallback if no specific keyword found, prepend description
-                    finalPrompt = `${desc}, ${finalPrompt}`;
-                }
-            }
-
-            // Append user prompt
+            // Append user prompt if provided
             if (prompt?.trim()) {
-                finalPrompt += `, ${prompt.trim()}`;
+                finalPrompt += ` 额外要求: ${prompt.trim()}`;
             }
 
-            console.log("Generating with params:", {
-                model: CONTROLNET_MODEL,
-                style,
-                thresholds: { low: config.low_threshold, high: config.high_threshold },
-                prompt: finalPrompt
-            });
+            console.log("=== Calling OpenRouter Nano Banana ===");
+            console.log("Model:", NANO_BANANA_MODEL);
+            console.log("Style:", style || "default");
+            console.log("Prompt:", finalPrompt);
 
-            const output = await replicate.run(CONTROLNET_MODEL, {
-                input: {
-                    image,
-                    prompt: finalPrompt,
-                    a_prompt: config.a_prompt,
-                    n_prompt: config.n_prompt,
-                    num_samples: "1",
-                    image_resolution: "512",
-                    low_threshold: config.low_threshold,
-                    high_threshold: config.high_threshold,
-                    ddim_steps: 20,
-                    scale: 9,
-                    eta: 0.0
+            // Prepare image data - ensure it's in the correct format
+            let imageData = image;
+            let mimeType = "image/png";
+
+            // Handle base64 data URL format
+            if (image.startsWith('data:')) {
+                const matches = image.match(/^data:([^;]+);base64,(.+)$/);
+                if (matches) {
+                    mimeType = matches[1];
+                    imageData = image; // Keep full data URL for OpenRouter
                 }
+            } else {
+                // If it's raw base64, add the data URL prefix
+                imageData = `data:image/png;base64,${image}`;
+            }
+
+            // Call OpenRouter API
+            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+                    "X-Title": "Line Art Generator"
+                },
+                body: JSON.stringify({
+                    model: NANO_BANANA_MODEL,
+                    response_modalities: ["image", "text"],
+                    messages: [
+                        {
+                            role: "user",
+                            content: [
+                                {
+                                    type: "text",
+                                    text: finalPrompt
+                                },
+                                {
+                                    type: "image_url",
+                                    image_url: {
+                                        url: imageData
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                })
             });
 
-            const resultUrl = extractReplicateUrl(output);
-            console.log("Extracted URL:", resultUrl);
-
-            if (!resultUrl || !resultUrl.startsWith('http')) {
-                throw new Error("Replicate returned invalid result");
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("OpenRouter API Error:", response.status, errorText);
+                throw new Error(`OpenRouter API failed: ${response.status} - ${errorText}`);
             }
+
+            const result = await response.json();
+            console.log("OpenRouter Response structure:", JSON.stringify({
+                hasChoices: !!result.choices,
+                messageKeys: result.choices?.[0]?.message ? Object.keys(result.choices[0].message) : [],
+                contentType: typeof result.choices?.[0]?.message?.content,
+                hasImages: !!result.choices?.[0]?.message?.images
+            }, null, 2));
+
+            // Extract the generated image from the response
+            let resultImageUrl: string | null = null;
+
+            const message = result.choices?.[0]?.message;
+            if (message) {
+                // Check for images array (OpenRouter Nano Banana format)
+                if (message.images && Array.isArray(message.images) && message.images.length > 0) {
+                    const img = message.images[0];
+                    if (img.type === "image_url" && img.image_url?.url) {
+                        resultImageUrl = img.image_url.url;
+                    }
+                }
+
+                // Fallback: check content if it's an array
+                if (!resultImageUrl && Array.isArray(message.content)) {
+                    for (const part of message.content) {
+                        if (part.type === "image_url" && part.image_url?.url) {
+                            resultImageUrl = part.image_url.url;
+                            break;
+                        }
+                        if (part.type === "image" && part.data) {
+                            resultImageUrl = `data:image/png;base64,${part.data}`;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!resultImageUrl) {
+                console.error("Failed to extract image from response:", JSON.stringify(result, null, 2));
+                throw new Error("Nano Banana returned no image");
+            }
+
+            console.log("Generated image URL/data length:", resultImageUrl.substring(0, 100) + "...");
 
             // 5. Log Generation
             await supabase.from("generations").insert({
                 user_id: user.id,
                 prompt: finalPrompt,
-                model_id: "controlnet-canny",
-                image_url: resultUrl,
+                model_id: "nano-banana",
+                image_url: resultImageUrl.startsWith("data:") ? "base64_image" : resultImageUrl,
                 input_image_url: "user_upload",
                 status: "succeeded",
                 credits_cost: CREDITS_PER_GENERATION,
-                metadata: { style }
+                metadata: { style, model: NANO_BANANA_MODEL }
             });
 
-            return NextResponse.json({ url: resultUrl, success: true });
+            return NextResponse.json({ url: resultImageUrl, success: true });
 
         } catch (aiError: any) {
             console.error("AI Service Error:", aiError);
