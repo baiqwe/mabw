@@ -23,6 +23,12 @@ export const useImageProcessor = () => {
         return new Promise((resolve, reject) => {
             const img = new Image();
 
+            // Enable CORS for external images (e.g., Unsplash)
+            // Only set crossOrigin for non-data URLs
+            if (!imageSrc.startsWith('data:')) {
+                img.crossOrigin = 'Anonymous';
+            }
+
             img.onload = () => {
                 try {
                     const canvas = document.createElement('canvas');
