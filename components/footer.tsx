@@ -126,9 +126,27 @@ export function Footer() {
           <p className="text-center text-sm text-muted-foreground md:text-left">
             © {new Date().getFullYear()} MakeBW.com. {t('rights')}
           </p>
-          <p className="text-center text-sm text-muted-foreground md:text-right">
-            Built by <span className="font-medium">Bai</span>
-          </p>
+          <div className="flex flex-col items-center gap-1 text-center text-sm text-muted-foreground md:items-end md:text-right">
+            <p>
+              Built by <span className="font-medium">Bai</span>
+            </p>
+            <Link
+              href="https://animeify.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              animeify.co
+            </Link>
+            <Link
+              href="https://gptimage2.online"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              gptimage2.online
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
