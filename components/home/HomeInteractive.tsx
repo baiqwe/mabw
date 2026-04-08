@@ -73,7 +73,7 @@ export default function HomeInteractive({ onShowStaticContent, user }: HomeInter
 
     // 处理选项
     const [viewerMode, setViewerMode] = useState<'basic' | 'ai'>('basic');
-    const [mode, setMode] = useState<ProcessMode>('coloring');
+    const [mode, setMode] = useState<ProcessMode>('grayscale');
     const [threshold, setThreshold] = useState<number>(128);
     const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
 
