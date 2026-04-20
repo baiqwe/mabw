@@ -197,18 +197,18 @@ export default function HomeInteractive({ onShowStaticContent, user }: HomeInter
                 {/* Header */}
                 <div className="text-center mb-8 lg:mb-12">
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2D2D2D] leading-tight tracking-tight mb-4" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        Create Perfect{' '}
-                        <span className="text-[#7C9070] relative inline-block">
-                            Coloring Pages
-                            <svg className="absolute w-full h-2 -bottom-1 left-0 text-[#7C9070]/20" viewBox="0 0 100 10" preserveAspectRatio="none">
+                        {locale === 'zh' ? '一键把照片变成' : 'Make Any Photo'}{' '}
+                        <span className="text-[#6D28D9] relative inline-block">
+                            {locale === 'zh' ? '黑白图片' : 'Black & White'}
+                            <svg className="absolute w-full h-2 -bottom-1 left-0 text-[#6D28D9]/20" viewBox="0 0 100 10" preserveAspectRatio="none">
                                 <path d="M0 5 Q 25 0, 50 5 T 100 5" stroke="currentColor" strokeWidth="3" fill="none" />
                             </svg>
                         </span>
                     </h1>
                     <p className="text-lg text-[#666] max-w-2xl mx-auto">
                         {locale === 'zh'
-                            ? '上传任意照片，一键转换为专业涂色画'
-                            : 'Upload any photo, convert to professional coloring pages instantly'}
+                            ? '上传彩色照片，立即生成清晰的黑白效果。'
+                            : 'Upload a color photo and instantly convert it into a clean black and white image.'}
                     </p>
                 </div>
 
