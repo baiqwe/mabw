@@ -18,9 +18,10 @@ interface MobileNavProps {
   user: any;
   isDashboard: boolean;
   currentLocale?: string;
+  showAuth?: boolean;
 }
 
-export function MobileNav({ items, user, isDashboard, currentLocale = 'en' }: MobileNavProps) {
+export function MobileNav({ items, user, isDashboard, currentLocale = 'en', showAuth = true }: MobileNavProps) {
   const pathname = usePathname();
   const localePrefix = `/${currentLocale}`;
 
@@ -82,7 +83,7 @@ export function MobileNav({ items, user, isDashboard, currentLocale = 'en' }: Mo
             </Link>
           ))}
         </nav>
-        <div className="mt-auto pt-4 border-t">
+        {showAuth && <div className="mt-auto pt-4 border-t">
           {user ? (
             <div className="flex flex-col gap-2">
               <Button asChild variant="default" className="w-full">
@@ -110,7 +111,7 @@ export function MobileNav({ items, user, isDashboard, currentLocale = 'en' }: Mo
               </Button>
             </div>
           )}
-        </div>
+        </div>}
       </SheetContent>
     </Sheet>
   );

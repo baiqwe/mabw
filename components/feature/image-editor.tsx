@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import { useImageProcessor, ProcessMode } from '@/hooks/useImageProcessor';
 import ImageUploader from './image-uploader';
 import CompareSlider from './compare-slider';
-import { AiPromotionBanner } from './ai-promotion-banner';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -33,7 +32,7 @@ export default function ImageEditor({
     const [fileName, setFileName] = useState<string>('image');
     const [mode, setMode] = useState<ProcessMode>(defaultMode);
     const [threshold, setThreshold] = useState<number>(128);
-    const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
+    const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg' | 'webp'>('png');
     const [hasProcessed, setHasProcessed] = useState(false); // 是否已处理完成
 
     // 如果从外部传入初始图片，恢复状态
@@ -53,7 +52,7 @@ export default function ImageEditor({
                 const result = await processImage(originalImage, {
                     mode,
                     threshold,
-                    keepTransparency: downloadFormat === 'png',
+                    keepTransparency: downloadFormat !== 'jpg',
                 });
                 setProcessedImage(result);
                 setHasProcessed(true);
@@ -166,7 +165,7 @@ export default function ImageEditor({
                     {/* Download Format */}
                     <div className="space-y-3">
                         <Label className="text-base font-semibold">{t('download_label')}</Label>
-                        <RadioGroup value={downloadFormat} onValueChange={(v) => setDownloadFormat(v as 'png' | 'jpg')}>
+                        <RadioGroup value={downloadFormat} onValueChange={(v) => setDownloadFormat(v as 'png' | 'jpg' | 'webp')}>
                             <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="png" id="png" />
                                 <Label htmlFor="png" className="cursor-pointer">
@@ -178,6 +177,10 @@ export default function ImageEditor({
                                 <Label htmlFor="jpg" className="cursor-pointer">
                                     {t('download_jpg')}
                                 </Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="webp" id="webp" />
+                                <Label htmlFor="webp" className="cursor-pointer">WebP</Label>
                             </div>
                         </RadioGroup>
                     </div>
@@ -284,7 +287,7 @@ export default function ImageEditor({
                 {/* Download Format */}
                 <div className="space-y-3">
                     <Label className="text-base font-semibold">{t('download_label')}</Label>
-                    <RadioGroup value={downloadFormat} onValueChange={(v) => setDownloadFormat(v as 'png' | 'jpg')}>
+                    <RadioGroup value={downloadFormat} onValueChange={(v) => setDownloadFormat(v as 'png' | 'jpg' | 'webp')}>
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem value="png" id="png" />
                             <Label htmlFor="png" className="cursor-pointer">
@@ -296,6 +299,10 @@ export default function ImageEditor({
                             <Label htmlFor="jpg" className="cursor-pointer">
                                 {t('download_jpg')}
                             </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="webp" id="webp" />
+                            <Label htmlFor="webp" className="cursor-pointer">WebP</Label>
                         </div>
                     </RadioGroup>
                 </div>
@@ -322,10 +329,6 @@ export default function ImageEditor({
                 </div>
             </div>
 
-            {/* AI Promotion Banner - Freemium Funnel Hook */}
-            {hasProcessed && processedImage && (
-                <AiPromotionBanner />
-            )}
         </div>
     );
 }

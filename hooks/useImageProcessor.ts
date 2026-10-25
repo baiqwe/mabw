@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export type ProcessMode = 'grayscale' | 'coloring' | 'invert';
+export type ProcessMode = 'grayscale' | 'threshold' | 'coloring' | 'invert';
 
 export interface ProcessOptions {
     mode: ProcessMode;
@@ -52,6 +52,10 @@ export const useImageProcessor = () => {
                             applyGrayscale(data, options.keepTransparency);
                             break;
 
+                        case 'threshold':
+                            applyThreshold(data, options.threshold ?? 128, options.keepTransparency);
+                            break;
+
                         case 'coloring':
                             applyLineArt(data, canvas.width, canvas.height, options.threshold || 100);
                             break;
@@ -85,14 +89,14 @@ export const useImageProcessor = () => {
     const downloadImage = useCallback((
         dataUrl: string,
         filename: string,
-        format: 'png' | 'jpg' = 'png',
+        format: 'png' | 'jpg' | 'webp' = 'png',
         quality: number = 0.95
     ) => {
         const link = document.createElement('a');
         link.download = `${filename}.${format}`;
 
-        if (format === 'jpg') {
-            // Convert to JPG (no transparency)
+        if (format === 'jpg' || format === 'webp') {
+            // Re-encode formats that need a canvas MIME type.
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
@@ -101,12 +105,14 @@ export const useImageProcessor = () => {
                 const ctx = canvas.getContext('2d');
                 if (!ctx) return;
 
-                // White background for JPG
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                // JPG does not support transparency.
+                if (format === 'jpg') {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
                 ctx.drawImage(img, 0, 0);
 
-                link.href = canvas.toDataURL('image/jpeg', quality);
+                link.href = canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/webp', quality);
                 link.click();
             };
             img.src = dataUrl;
@@ -147,6 +153,20 @@ function applyGrayscale(data: Uint8ClampedArray, keepTransparency?: boolean) {
         data[i + 2] = gray; // B
 
         // If not keeping transparency, set alpha to 255
+        if (!keepTransparency && data[i + 3] < 255) {
+            data[i + 3] = 255;
+        }
+    }
+}
+
+function applyThreshold(data: Uint8ClampedArray, threshold: number, keepTransparency?: boolean) {
+    for (let i = 0; i < data.length; i += 4) {
+        const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+        const value = gray >= threshold ? 255 : 0;
+        data[i] = value;
+        data[i + 1] = value;
+        data[i + 2] = value;
+
         if (!keepTransparency && data[i + 3] < 255) {
             data[i + 3] = 255;
         }

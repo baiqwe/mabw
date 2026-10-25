@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import ImageEditor from '@/components/feature/image-editor';
+import HomeInteractive from '@/components/home/HomeInteractive';
 import { Palette, Users, GraduationCap, CheckCircle } from 'lucide-react';
 import { BreadcrumbSchema, FAQSchema, HowToSchema } from '@/components/breadcrumb-schema';
 
@@ -51,7 +51,6 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 export default async function ColoringPagePage(props: { params: Promise<{ locale: string }> }) {
     const params = await props.params;
     const { locale } = params;
-    const t = await getTranslations({ locale, namespace: 'pages' });
 
     const isZh = locale === 'zh';
 
@@ -88,7 +87,7 @@ export default async function ColoringPagePage(props: { params: Promise<{ locale
     ];
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-[#f7f6f2]">
             {/* Structured Data */}
             <BreadcrumbSchema items={breadcrumbs} />
             <FAQSchema items={faqItems} />
@@ -98,42 +97,33 @@ export default async function ColoringPagePage(props: { params: Promise<{ locale
                 steps={howToSteps}
             />
 
-            {/* Hero */}
-            <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
-                <div className="container px-4 md:px-6">
-                    <div className="max-w-3xl mx-auto text-center space-y-4">
-                        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                            {t('coloring_title')}
-                        </h1>
-                        <p className="text-xl text-muted-foreground">
-                            {t('coloring_desc')}
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            {/* Editor */}
-            <section className="py-12">
-                <div className="container px-4 md:px-6">
-                    <ImageEditor defaultMode="coloring" />
-                </div>
-            </section>
+            <HomeInteractive
+                initialMode="coloring"
+                modes={[
+                    { value: 'coloring', en: 'Line art', zh: '线稿' },
+                    { value: 'threshold', en: 'Pure Black & White', zh: '纯黑白' },
+                    { value: 'grayscale', en: 'Grayscale', zh: '灰度' },
+                ]}
+                heading={{ en: 'Turn a Photo into a', zh: '一键把照片变成' }}
+                highlightedHeading={{ en: 'Coloring Page', zh: '填色画' }}
+                subtitle={{ en: 'Create clean, printable line art in your browser. Free, private, and ready to download.', zh: '浏览器本地生成清晰、可打印的线稿。免费、私密，完成后直接下载。' }}
+            />
 
             {/* How It Works */}
-            <section className="py-16 bg-muted/20">
+            <section className="border-y border-[#ddd9ce] bg-[#efeee8] py-16 md:py-20">
                 <div className="container px-4 md:px-6">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-3xl font-bold text-center mb-12">
+                        <h2 className="mb-10 text-center text-3xl font-bold tracking-tight text-[#2d2d2d]">
                             {isZh ? '如何使用？' : 'How It Works'}
                         </h2>
-                        <div className="grid md:grid-cols-4 gap-6">
+                        <div className="grid gap-4 md:grid-cols-4">
                             {howToSteps.map((step, index) => (
-                                <div key={index} className="text-center space-y-3">
-                                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
+                                <div key={index} className="space-y-3 rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-5 text-center shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#b6e62e] font-bold text-[#181817]">
                                         {index + 1}
                                     </div>
                                     <h3 className="font-semibold">{step.name}</h3>
-                                    <p className="text-sm text-muted-foreground">{step.text}</p>
+                                    <p className="text-sm leading-6 text-[#666]">{step.text}</p>
                                 </div>
                             ))}
                         </div>
@@ -142,41 +132,41 @@ export default async function ColoringPagePage(props: { params: Promise<{ locale
             </section>
 
             {/* Use Cases */}
-            <section className="py-16">
+            <section className="bg-[#f7f6f2] py-16 md:py-20">
                 <div className="container px-4 md:px-6">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-3xl font-bold text-center mb-12">
+                        <h2 className="mb-10 text-center text-3xl font-bold tracking-tight text-[#2d2d2d]">
                             {isZh ? '适合谁使用？' : 'Perfect For'}
                         </h2>
-                        <div className="grid md:grid-cols-3 gap-8">
-                            <div className="text-center space-y-3">
-                                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-2">
-                                    <Users className="w-6 h-6 text-primary" />
+                        <div className="grid gap-4 md:grid-cols-3">
+                            <div className="space-y-3 rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 text-center shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                <div className="mb-2 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f6b2]">
+                                    <Users className="h-5 w-5 text-[#2d2d2d]" />
                                 </div>
                                 <h3 className="font-semibold">{isZh ? '家长' : 'Parents'}</h3>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-sm leading-6 text-[#666]">
                                     {isZh
                                         ? '将家人照片转换成填色画，让孩子创作独特的家庭艺术作品。'
                                         : 'Create custom coloring pages from family photos for kids to color.'}
                                 </p>
                             </div>
-                            <div className="text-center space-y-3">
-                                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-2">
-                                    <GraduationCap className="w-6 h-6 text-primary" />
+                            <div className="space-y-3 rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 text-center shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                <div className="mb-2 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#eee8ff]">
+                                    <GraduationCap className="h-5 w-5 text-[#5d35d8]" />
                                 </div>
                                 <h3 className="font-semibold">{isZh ? '老师' : 'Teachers'}</h3>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-sm leading-6 text-[#666]">
                                     {isZh
                                         ? '为课堂活动生成教育性填色材料，让学习更有趣。'
                                         : 'Generate educational coloring materials for classroom activities.'}
                                 </p>
                             </div>
-                            <div className="text-center space-y-3">
-                                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-2">
-                                    <Palette className="w-6 h-6 text-primary" />
+                            <div className="space-y-3 rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 text-center shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                <div className="mb-2 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#fbe9c6]">
+                                    <Palette className="h-5 w-5 text-[#9a6115]" />
                                 </div>
                                 <h3 className="font-semibold">{isZh ? '艺术家' : 'Artists'}</h3>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-sm leading-6 text-[#666]">
                                     {isZh
                                         ? '从照片中提取线稿，用于描摹和插画创作。'
                                         : 'Extract line art from photos for tracing and illustration.'}
@@ -188,51 +178,51 @@ export default async function ColoringPagePage(props: { params: Promise<{ locale
             </section>
 
             {/* Why Choose Us */}
-            <section className="py-16 bg-muted/20">
+            <section className="border-y border-[#ddd9ce] bg-[#efeee8] py-16 md:py-20">
                 <div className="container px-4 md:px-6">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-3xl font-bold text-center mb-12">
+                        <h2 className="mb-10 text-center text-3xl font-bold tracking-tight text-[#2d2d2d]">
                             {isZh ? '为什么选择 MakeBW？' : 'Why Choose MakeBW?'}
                         </h2>
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="flex gap-4 p-4 rounded-lg bg-background">
-                                <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                        <div className="grid gap-4 md:grid-cols-2">
+                            <div className="flex gap-4 rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                <CheckCircle className="mt-1 h-5 w-5 shrink-0 text-[#5d35d8]" />
                                 <div>
                                     <h3 className="font-semibold mb-1">{isZh ? '100% 隐私保护' : '100% Privacy'}</h3>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm leading-6 text-[#666]">
                                         {isZh
                                             ? '图片完全在浏览器本地处理，从不上传到服务器。'
                                             : 'Images are processed locally in your browser. Never uploaded to any server.'}
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex gap-4 p-4 rounded-lg bg-background">
-                                <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                            <div className="flex gap-4 rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                <CheckCircle className="mt-1 h-5 w-5 shrink-0 text-[#5d35d8]" />
                                 <div>
                                     <h3 className="font-semibold mb-1">{isZh ? '专业边缘检测' : 'Professional Edge Detection'}</h3>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm leading-6 text-[#666]">
                                         {isZh
                                             ? '使用 Sobel 边缘检测算法，生成清晰、专业的线稿效果。'
                                             : 'Using Sobel edge detection algorithm for clear, professional line art.'}
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex gap-4 p-4 rounded-lg bg-background">
-                                <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                            <div className="flex gap-4 rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                <CheckCircle className="mt-1 h-5 w-5 shrink-0 text-[#5d35d8]" />
                                 <div>
                                     <h3 className="font-semibold mb-1">{isZh ? '打印优化' : 'Print Optimized'}</h3>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm leading-6 text-[#666]">
                                         {isZh
                                             ? '输出专门针对打印优化，线条清晰，适合 A4 纸打印。'
                                             : 'Output is optimized for printing with clear lines, perfect for A4 paper.'}
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex gap-4 p-4 rounded-lg bg-background">
-                                <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                            <div className="flex gap-4 rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                <CheckCircle className="mt-1 h-5 w-5 shrink-0 text-[#5d35d8]" />
                                 <div>
                                     <h3 className="font-semibold mb-1">{isZh ? '永久免费' : 'Forever Free'}</h3>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm leading-6 text-[#666]">
                                         {isZh
                                             ? '无需注册，无需付费，无限制使用。'
                                             : 'No registration, no payment, unlimited use.'}
@@ -245,17 +235,17 @@ export default async function ColoringPagePage(props: { params: Promise<{ locale
             </section>
 
             {/* FAQ */}
-            <section className="py-16">
+            <section className="bg-[#f7f6f2] py-16 md:py-20">
                 <div className="container px-4 md:px-6">
                     <div className="max-w-3xl mx-auto">
-                        <h2 className="text-3xl font-bold text-center mb-12">
+                        <h2 className="mb-10 text-center text-3xl font-bold tracking-tight text-[#2d2d2d]">
                             {isZh ? '常见问题' : 'Frequently Asked Questions'}
                         </h2>
-                        <div className="space-y-6">
+                        <div className="space-y-3">
                             {faqItems.map((item, index) => (
-                                <div key={index} className="border-b pb-6">
+                                <div key={index} className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
                                     <h3 className="font-semibold text-lg mb-2">{item.question}</h3>
-                                    <p className="text-muted-foreground">{item.answer}</p>
+                                    <p className="leading-7 text-[#666]">{item.answer}</p>
                                 </div>
                             ))}
                         </div>

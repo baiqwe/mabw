@@ -18,6 +18,7 @@ export function Footer() {
   // 工具链接 - 内链建设核心
   const toolLinks = [
     { label: "Grayscale Converter", labelZh: "灰度转换", href: `${localePrefix}/color-to-black-and-white` },
+    { label: "Threshold Image", labelZh: "图片阈值", href: `${localePrefix}/threshold-image` },
     { label: "Coloring Page Maker", labelZh: "填色画制作", href: `${localePrefix}/photo-to-coloring-page` },
     { label: "Invert Colors", labelZh: "反色工具", href: `${localePrefix}/invert-colors` },
   ];

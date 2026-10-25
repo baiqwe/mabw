@@ -41,57 +41,57 @@ export default async function HomeStaticContent({ locale }: HomeStaticContentPro
 
 function WhatSection({ isZh }: { isZh: boolean }) {
     return (
-        <section className="py-20 bg-muted/20">
+        <section className="border-y border-[#ddd9ce] bg-[#efeee8] py-20 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="max-w-4xl mx-auto">
-                    <div className="text-center space-y-4 mb-12">
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                    <div className="mx-auto mb-12 max-w-3xl text-center space-y-4">
+                        <h2 className="text-3xl font-bold tracking-tight text-[#2d2d2d] sm:text-4xl">
                             {isZh ? '什么是 MakeBW？' : 'What is MakeBW?'}
                         </h2>
-                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                        <p className="text-lg leading-8 text-[#666]">
                             {isZh
                                 ? '正在寻找免费的图片转黑白工具？MakeBW 是最好的在线黑白制作器，可在浏览器中即时处理图像。无论您是想将照片变成填色画，还是想了解如何将图像转换为黑白以进行打印，我们的工具都能安全地处理。'
                                 : 'Looking for a free color to black and white converter? MakeBW is the best online black and white maker that processes images instantly in your browser. Whether you want to turn a photo into a coloring page or learn how to convert image to black and white for printing, our tool handles it all securely.'}
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-6">
-                        <div className="bg-background rounded-lg p-6 border border-border">
-                            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                                <Palette className="w-6 h-6 text-primary" />
+                    <div className="grid gap-4 md:grid-cols-3">
+                        <div className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                            <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f6b2]">
+                                <Palette className="h-5 w-5 text-[#2d2d2d]" />
                             </div>
                             <h3 className="text-xl font-bold mb-2">
                                 {isZh ? '灰度转换' : 'Grayscale Conversion'}
                             </h3>
-                            <p className="text-muted-foreground">
+                            <p className="leading-7 text-[#666]">
                                 {isZh
                                     ? '将彩色照片转换为经典黑白效果，节省打印成本，创造艺术效果。'
                                     : 'Convert color photos to classic black and white, save printing costs, create artistic effects.'}
                             </p>
                         </div>
 
-                        <div className="bg-background rounded-lg p-6 border border-border">
-                            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                                <Heart className="w-6 h-6 text-primary" />
+                        <div className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                            <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#eee8ff]">
+                                <Heart className="h-5 w-5 text-[#5d35d8]" />
                             </div>
                             <h3 className="text-xl font-bold mb-2">
                                 {isZh ? '填色画生成' : 'Coloring Page Maker'}
                             </h3>
-                            <p className="text-muted-foreground">
+                            <p className="leading-7 text-[#666]">
                                 {isZh
                                     ? '从任何照片提取线稿，制作可打印的儿童填色画。'
                                     : 'Extract line art from any photo to create printable coloring pages for kids.'}
                             </p>
                         </div>
 
-                        <div className="bg-background rounded-lg p-6 border border-border">
-                            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                                <Sparkles className="w-6 h-6 text-primary" />
+                        <div className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                            <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-lg bg-[#fbe9c6]">
+                                <Sparkles className="h-5 w-5 text-[#9a6115]" />
                             </div>
                             <h3 className="text-xl font-bold mb-2">
                                 {isZh ? '颜色反转' : 'Color Inversion'}
                             </h3>
-                            <p className="text-muted-foreground">
+                            <p className="leading-7 text-[#666]">
                                 {isZh
                                     ? '创建负片效果，用于特殊设计和艺术创作。'
                                     : 'Create negative effects for special designs and artistic creation.'}
@@ -118,33 +118,33 @@ function HowSection({ isZh, locale }: { isZh: boolean; locale: string }) {
     ];
 
     return (
-        <section className="py-20 bg-background">
+        <section className="bg-[#f7f6f2] py-20 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center space-y-4 mb-12">
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                        <h2 className="text-3xl font-bold tracking-tight text-[#2d2d2d] sm:text-4xl">
                             {isZh ? '如何使用？' : 'How It Works?'}
                         </h2>
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        <p className="mx-auto max-w-2xl text-lg text-[#666]">
                             {isZh
                                 ? '只需 4 步，即可完成图片转换。无需注册，无需安装。'
                                 : 'Just 4 steps to complete image conversion. No registration, no installation required.'}
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-4 gap-8">
+                    <div className="grid gap-4 md:grid-cols-4">
                         {steps.map((step) => (
                             <div key={step.number} className="relative">
-                                <div className="text-center space-y-4">
-                                    <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-2xl font-bold">
+                                <div className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 text-center shadow-[0_4px_12px_rgba(24,24,23,0.04)] space-y-4">
+                                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#b6e62e] text-lg font-bold text-[#181817]">
                                         {step.number}
                                     </div>
                                     <h3 className="text-lg font-bold">{step.title}</h3>
-                                    <p className="text-sm text-muted-foreground">{step.desc}</p>
+                                    <p className="text-sm leading-6 text-[#666]">{step.desc}</p>
                                 </div>
                                 {step.number < steps.length && (
-                                    <div className="hidden md:flex absolute top-8 left-full w-8 -translate-y-1/2 items-center justify-center z-10">
-                                        <ArrowRight className="w-6 h-6 text-muted-foreground" />
+                                    <div className="hidden md:flex absolute top-1/2 left-full w-4 -translate-y-1/2 items-center justify-center z-10">
+                                        <ArrowRight className="h-4 w-4 text-[#9a9891]" />
                                     </div>
                                 )}
                             </div>
@@ -170,34 +170,34 @@ function WhySection({ isZh }: { isZh: boolean }) {
     ];
 
     return (
-        <section className="py-20 bg-muted/20">
+        <section className="border-y border-[#ddd9ce] bg-[#efeee8] py-20 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center space-y-4 mb-12">
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                        <h2 className="text-3xl font-bold tracking-tight text-[#2d2d2d] sm:text-4xl">
                             {isZh ? '为什么选择 MakeBW？' : 'Why Choose MakeBW?'}
                         </h2>
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        <p className="mx-auto max-w-2xl text-lg text-[#666]">
                             {isZh
                                 ? '与其他在线工具不同，MakeBW 专注于您的隐私和体验。'
                                 : 'Unlike other online tools, MakeBW focuses on your privacy and experience.'}
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid gap-4 md:grid-cols-2">
                         {reasons.map((reason, idx) => {
                             const Icon = reason.icon;
                             return (
-                                <div key={idx} className="bg-background rounded-lg p-6 border border-border hover:shadow-md transition-shadow">
+                                <div key={idx} className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)] transition-shadow hover:shadow-md">
                                     <div className="flex gap-4">
                                         <div className="flex-shrink-0">
-                                            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                                                <Icon className="w-6 h-6 text-primary" />
+                                            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f6b2]">
+                                                <Icon className="h-5 w-5 text-[#2d2d2d]" />
                                             </div>
                                         </div>
                                         <div>
                                             <h3 className="text-xl font-bold mb-2">{reason.title}</h3>
-                                            <p className="text-muted-foreground">{reason.desc}</p>
+                                            <p className="leading-7 text-[#666]">{reason.desc}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -221,32 +221,32 @@ function FeaturesSection({ t }: { t: any }) {
     ];
 
     return (
-        <section className="py-20 bg-background">
+        <section className="bg-[#f7f6f2] py-20 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="mx-auto max-w-6xl space-y-12 text-center">
                     <div className="space-y-4">
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                        <h2 className="text-3xl font-bold tracking-tight text-[#2d2d2d] sm:text-4xl">
                             {t('title')}
                         </h2>
-                        <p className="mx-auto max-w-3xl text-muted-foreground text-lg">
+                        <p className="mx-auto max-w-3xl text-lg text-[#666]">
                             {t('subtitle')}
                         </p>
                     </div>
 
-                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {features.map((feature, idx) => {
                             const Icon = feature.icon;
                             return (
                                 <div
                                     key={idx}
-                                    className="rounded-2xl bg-muted/30 p-8 shadow-sm border border-border hover:shadow-md transition-shadow"
+                                    className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-7 shadow-[0_4px_12px_rgba(24,24,23,0.04)] transition-shadow hover:shadow-md"
                                 >
                                     <div className="space-y-4">
-                                        <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                                            <Icon className="w-6 h-6 text-primary" />
+                                        <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#eee8ff]">
+                                            <Icon className="h-5 w-5 text-[#5d35d8]" />
                                         </div>
-                                        <h3 className="text-xl font-bold text-foreground">{feature.title}</h3>
-                                        <p className="text-muted-foreground">{feature.desc}</p>
+                                        <h3 className="text-xl font-bold text-[#2d2d2d]">{feature.title}</h3>
+                                        <p className="leading-7 text-[#666]">{feature.desc}</p>
                                     </div>
                                 </div>
                             );
@@ -322,40 +322,40 @@ function UseCasesSection({ isZh, locale }: { isZh: boolean; locale: string }) {
     ];
 
     return (
-        <section className="py-20 bg-muted/20">
+        <section className="border-y border-[#ddd9ce] bg-[#efeee8] py-20 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center space-y-4 mb-12">
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                        <h2 className="text-3xl font-bold tracking-tight text-[#2d2d2d] sm:text-4xl">
                             {isZh ? '谁在使用 MakeBW？' : 'Who Uses MakeBW?'}
                         </h2>
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        <p className="mx-auto max-w-2xl text-lg text-[#666]">
                             {isZh
                                 ? '来自各行各业的用户都在使用 MakeBW 解决他们的图片处理需求。'
                                 : 'Users from all walks of life use MakeBW to solve their image processing needs.'}
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid gap-4 md:grid-cols-2">
                         {useCases.map((useCase, idx) => {
                             const Icon = useCase.icon;
                             return (
-                                <div key={idx} className="bg-background rounded-lg p-6 border border-border hover:shadow-lg transition-shadow">
+                                <div key={idx} className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)] transition-shadow hover:shadow-md">
                                     <div className="flex gap-4 mb-4">
                                         <div className="flex-shrink-0">
-                                            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                                                <Icon className="w-6 h-6 text-primary" />
+                                            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f6b2]">
+                                                <Icon className="h-5 w-5 text-[#2d2d2d]" />
                                             </div>
                                         </div>
                                         <div>
                                             <h3 className="text-xl font-bold">{useCase.title}</h3>
-                                            <p className="text-sm text-muted-foreground">{useCase.desc}</p>
+                                            <p className="text-sm text-[#706f69]">{useCase.desc}</p>
                                         </div>
                                     </div>
-                                    <p className="text-muted-foreground mb-4">{useCase.example}</p>
+                                    <p className="mb-4 leading-7 text-[#666]">{useCase.example}</p>
                                     <Link
                                         href={useCase.link.href}
-                                        className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+                                        className="inline-flex items-center gap-2 text-sm font-semibold text-[#5d35d8] hover:underline"
                                     >
                                         {useCase.link.text}
                                     </Link>
@@ -381,39 +381,39 @@ function SupportedFormatsSection({ locale }: { locale: string }) {
     ];
 
     return (
-        <section className="py-20 bg-background">
+        <section className="bg-[#f7f6f2] py-20 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="mx-auto max-w-6xl space-y-12">
                     <div className="text-center space-y-4">
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                        <h2 className="text-3xl font-bold tracking-tight text-[#2d2d2d] sm:text-4xl">
                             {isZh ? '支持的图片格式' : 'Supported Image Formats'}
                         </h2>
-                        <p className="mx-auto max-w-3xl text-muted-foreground text-lg">
+                        <p className="mx-auto max-w-3xl text-lg text-[#666]">
                             {isZh
                                 ? '支持所有主流图片格式，一键转换为黑白。点击下方格式查看详细说明。'
                                 : 'Support for all major image formats. Convert to black and white with one click. Click any format below for details.'}
                         </p>
                     </div>
 
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                         {formats.map((format) => (
                             <Link
                                 key={format.name}
                                 href={format.href}
-                                className="group rounded-2xl bg-muted/30 p-6 hover:bg-muted/50 transition-all hover:shadow-lg border border-border hover:border-primary/50"
+                                className="group rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 shadow-[0_4px_12px_rgba(24,24,23,0.04)] transition-all hover:-translate-y-0.5 hover:border-[#b6e62e] hover:shadow-md"
                             >
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
+                                        <h3 className="text-2xl font-bold text-[#2d2d2d] transition-colors">
                                             {format.name}
                                         </h3>
-                                        <span className="text-muted-foreground group-hover:text-primary transition-colors">→</span>
+                                        <span className="text-[#9a9891] transition-colors group-hover:text-[#5d35d8]">→</span>
                                     </div>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm text-[#706f69]">
                                         {format.desc}
                                     </p>
                                     <div className="pt-2">
-                                        <span className="text-sm font-medium text-primary group-hover:underline">
+                                        <span className="text-sm font-semibold text-[#5d35d8] group-hover:underline">
                                             {isZh ? '转换为黑白 →' : 'Convert to B&W →'}
                                         </span>
                                     </div>
@@ -423,7 +423,7 @@ function SupportedFormatsSection({ locale }: { locale: string }) {
                     </div>
 
                     {/* Related Tools */}
-                    <div className="pt-8 border-t">
+                    <div className="border-t border-[#d9d7d0] pt-8">
                         <div className="text-center space-y-6">
                             <h3 className="text-2xl font-bold">
                                 {isZh ? '更多工具' : 'More Tools'}
@@ -431,19 +431,19 @@ function SupportedFormatsSection({ locale }: { locale: string }) {
                             <div className="flex flex-wrap justify-center gap-4">
                                 <Link
                                     href={`${localePrefix}/photo-to-coloring-page`}
-                                    className="px-6 py-3 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors font-medium"
+                                    className="rounded-full border border-[#d9d7d0] bg-[#fcfbf8] px-5 py-2.5 font-semibold text-[#2d2d2d] transition-colors hover:border-[#181817]"
                                 >
                                     {isZh ? '填色画生成器' : 'Coloring Page Maker'}
                                 </Link>
                                 <Link
                                     href={`${localePrefix}/color-to-black-and-white`}
-                                    className="px-6 py-3 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors font-medium"
+                                    className="rounded-full border border-[#d9d7d0] bg-[#fcfbf8] px-5 py-2.5 font-semibold text-[#2d2d2d] transition-colors hover:border-[#181817]"
                                 >
                                     {isZh ? '灰度转换器' : 'Grayscale Converter'}
                                 </Link>
                                 <Link
                                     href={`${localePrefix}/invert-colors`}
-                                    className="px-6 py-3 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors font-medium"
+                                    className="rounded-full border border-[#d9d7d0] bg-[#fcfbf8] px-5 py-2.5 font-semibold text-[#2d2d2d] transition-colors hover:border-[#181817]"
                                 >
                                     {isZh ? '反色工具' : 'Invert Colors'}
                                 </Link>
@@ -498,23 +498,23 @@ function FAQSection({ isZh }: { isZh: boolean }) {
     ];
 
     return (
-        <section className="py-20 bg-background border-t">
+        <section className="border-t border-[#ddd9ce] bg-[#efeee8] py-20 md:py-24">
             <div className="container px-4 md:px-6">
                 <div className="max-w-4xl mx-auto space-y-12">
                     <div className="text-center space-y-4">
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                        <h2 className="text-3xl font-bold tracking-tight text-[#2d2d2d] sm:text-4xl">
                             {isZh ? '常见问题' : 'Frequently Asked Questions'}
                         </h2>
-                        <p className="text-lg text-muted-foreground">
+                        <p className="text-lg text-[#666]">
                             {isZh ? '了解更多关于图片黑白转换的信息' : 'Learn more about converting images to black and white'}
                         </p>
                     </div>
 
-                    <div className="grid gap-6">
+                    <div className="grid gap-3">
                         {faqs.map((faq, idx) => (
-                            <div key={idx} className="bg-muted/30 rounded-lg p-6 space-y-3">
-                                <h3 className="text-xl font-bold">{faq.q}</h3>
-                                <div className="text-muted-foreground whitespace-pre-line leading-relaxed">
+                            <div key={idx} className="rounded-xl border border-[#d9d7d0] bg-[#fcfbf8] p-6 space-y-3 shadow-[0_4px_12px_rgba(24,24,23,0.04)]">
+                                <h3 className="text-xl font-bold text-[#2d2d2d]">{faq.q}</h3>
+                                <div className="whitespace-pre-line leading-7 text-[#666]">
                                     {faq.a}
                                 </div>
                             </div>
@@ -530,14 +530,14 @@ function CTASection({ isZh, locale }: { isZh: boolean; locale: string }) {
     const localePrefix = `/${locale}`;
 
     return (
-        <section className="py-20 bg-gradient-to-b from-muted/10 to-background">
+        <section className="bg-[#f7f6f2] py-20 md:py-24">
             <div className="container px-4 md:px-6">
-                <div className="mx-auto max-w-4xl text-center space-y-8">
+                <div className="mx-auto max-w-4xl rounded-2xl border border-[#d9d7d0] bg-[#181817] px-6 py-14 text-center shadow-[0_16px_40px_rgba(24,24,23,0.15)] md:px-12">
                     <div className="space-y-6">
-                        <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
+                        <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
                             {isZh ? '立即开始使用' : 'Start Converting Today'}
                         </h2>
-                        <p className="mx-auto max-w-2xl text-muted-foreground text-lg">
+                        <p className="mx-auto max-w-2xl text-lg text-[#d8d7d1]">
                             {isZh
                                 ? '免费、快速、完全私密。无需注册，立即开始。'
                                 : 'Free, fast, and completely private. No sign-up required.'}
@@ -545,13 +545,13 @@ function CTASection({ isZh, locale }: { isZh: boolean; locale: string }) {
                         <div className="flex flex-wrap justify-center gap-4 pt-4">
                             <Link
                                 href={`${localePrefix}/color-to-black-and-white`}
-                                className="px-8 py-4 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium text-lg"
+                                className="rounded-full bg-[#b6e62e] px-7 py-3.5 text-lg font-bold text-[#181817] transition-colors hover:bg-[#c6f34a]"
                             >
                                 {isZh ? '开始转换' : 'Start Converting'}
                             </Link>
                             <Link
                                 href={`${localePrefix}/photo-to-coloring-page`}
-                                className="px-8 py-4 rounded-full bg-muted hover:bg-muted/80 transition-colors font-medium text-lg"
+                                className="rounded-full border border-white/25 px-7 py-3.5 text-lg font-semibold text-white transition-colors hover:bg-white/10"
                             >
                                 {isZh ? '制作填色画' : 'Make Coloring Page'}
                             </Link>

@@ -52,8 +52,10 @@ module.exports = {
         const formats = ['jpg', 'png', 'webp', 'heic'];
         const staticPages = [
             'color-to-black-and-white',
+            'threshold-image',
             'photo-to-coloring-page',
             'invert-colors',
+            'tools',
             'privacy',
             'terms',
             'about'
@@ -77,7 +79,7 @@ module.exports = {
         // Add static feature and policy pages
         for (const locale of locales) {
             for (const page of staticPages) {
-                const priority = page.includes('privacy') || page.includes('terms') ? 0.5 : 0.8;
+                const priority = page.includes('privacy') || page.includes('terms') ? 0.5 : page === 'tools' ? 0.7 : 0.8;
                 result.push({
                     loc: `/${locale}/${page}`,
                     changefreq: page.includes('privacy') || page.includes('terms') ? 'monthly' : 'weekly',
