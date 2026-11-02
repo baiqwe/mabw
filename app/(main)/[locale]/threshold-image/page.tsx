@@ -24,7 +24,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
                 'x-default': '/en/threshold-image',
             },
         },
-        openGraph: { title, description, type: 'website', url: `https://makebw.com/${locale}/threshold-image` },
+        openGraph: { title, description, type: 'website', url: `https://www.makebw.com/${locale}/threshold-image` },
     };
 }
 
@@ -54,8 +54,8 @@ export default async function ThresholdImagePage(props: { params: Promise<{ loca
     return (
         <div className="min-h-screen bg-[#f7f6f2]">
             <BreadcrumbSchema items={[
-                { name: isZh ? '首页' : 'Home', url: `https://makebw.com${prefix}` },
-                { name: isZh ? '图片阈值处理器' : 'Threshold Image Filter', url: `https://makebw.com${prefix}/threshold-image` },
+                { name: isZh ? '首页' : 'Home', url: `https://www.makebw.com${prefix}` },
+                { name: isZh ? '图片阈值处理器' : 'Threshold Image Filter', url: `https://www.makebw.com${prefix}/threshold-image` },
             ]} />
             <FAQSchema items={faqs} />
             <HowToSchema name={isZh ? '如何将图片转为纯黑白' : 'How to convert an image to pure black and white'} description={isZh ? '使用 MakeBW 的阈值滑块，在线生成纯黑白图片。' : 'Use MakeBW’s threshold slider to create a pure black and white image online.'} steps={howToSteps} />

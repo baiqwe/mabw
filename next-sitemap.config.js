@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-    siteUrl: 'https://makebw.com',
+    siteUrl: 'https://www.makebw.com',
     generateRobotsTxt: true,
     generateIndexSitemap: false,
 
@@ -20,11 +20,11 @@ module.exports = {
     // Generate alternate language links
     alternateRefs: [
         {
-            href: 'https://makebw.com/en',
+            href: 'https://www.makebw.com/en',
             hreflang: 'en',
         },
         {
-            href: 'https://makebw.com/zh',
+            href: 'https://www.makebw.com/zh',
             hreflang: 'zh',
         },
     ],
@@ -71,7 +71,6 @@ module.exports = {
                     loc: path,
                     changefreq: 'weekly',
                     priority: 0.9,
-                    lastmod: new Date().toISOString(),
                 });
             }
         }
@@ -79,12 +78,11 @@ module.exports = {
         // Add static feature and policy pages
         for (const locale of locales) {
             for (const page of staticPages) {
-                const priority = page.includes('privacy') || page.includes('terms') ? 0.5 : page === 'tools' ? 0.7 : 0.8;
+                const priority = page.includes('privacy') || page.includes('terms') ? 0.5 : 0.8;
                 result.push({
                     loc: `/${locale}/${page}`,
                     changefreq: page.includes('privacy') || page.includes('terms') ? 'monthly' : 'weekly',
                     priority: priority,
-                    lastmod: new Date().toISOString(),
                 });
             }
         }
@@ -115,7 +113,6 @@ module.exports = {
             loc: path,
             changefreq,
             priority,
-            lastmod: new Date().toISOString(),
         };
     },
 };

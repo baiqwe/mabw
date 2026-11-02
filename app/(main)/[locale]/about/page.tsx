@@ -12,7 +12,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const { locale } = params;
 
     const isZh = locale === 'zh';
-    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const ogImage = 'https://www.makebw.com/web-app-manifest-512x512.png';
     const title = isZh ? '关于我们 - MakeBW.com' : 'About Us - MakeBW.com';
     const description = isZh
         ? 'MakeBW 是由开发者 Bai 创建的免费图片黑白转换工具。我们致力于提供最快、最安全的浏览器端图片处理方案。'
@@ -25,7 +25,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             title,
             description,
             type: 'website',
-            url: `https://makebw.com/${locale}/about`,
+            url: `https://www.makebw.com/${locale}/about`,
             images: [
                 {
                     url: ogImage,
@@ -61,8 +61,8 @@ export default async function AboutPage(props: { params: Promise<{ locale: strin
 
     // 面包屑
     const breadcrumbs = [
-        { name: isZh ? '首页' : 'Home', url: `https://makebw.com/${locale}` },
-        { name: isZh ? '关于我们' : 'About Us', url: `https://makebw.com/${locale}/about` },
+        { name: isZh ? '首页' : 'Home', url: `https://www.makebw.com/${locale}` },
+        { name: isZh ? '关于我们' : 'About Us', url: `https://www.makebw.com/${locale}/about` },
     ];
 
     return (

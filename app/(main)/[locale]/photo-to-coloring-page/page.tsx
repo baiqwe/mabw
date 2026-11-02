@@ -12,7 +12,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const t = await getTranslations({ locale, namespace: 'pages' });
 
     const isZh = locale === 'zh';
-    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const ogImage = 'https://www.makebw.com/web-app-manifest-512x512.png';
 
     return {
         title: t('coloring_title'),
@@ -21,7 +21,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             title: t('coloring_title'),
             description: t('coloring_desc'),
             type: 'website',
-            url: `https://makebw.com/${locale}/photo-to-coloring-page`,
+            url: `https://www.makebw.com/${locale}/photo-to-coloring-page`,
             images: [
                 {
                     url: ogImage,
@@ -56,8 +56,8 @@ export default async function ColoringPagePage(props: { params: Promise<{ locale
 
     // 面包屑数据
     const breadcrumbs = [
-        { name: isZh ? '首页' : 'Home', url: `https://makebw.com/${locale}` },
-        { name: isZh ? '填色画生成器' : 'Coloring Page Generator', url: `https://makebw.com/${locale}/photo-to-coloring-page` },
+        { name: isZh ? '首页' : 'Home', url: `https://www.makebw.com/${locale}` },
+        { name: isZh ? '填色画生成器' : 'Coloring Page Generator', url: `https://www.makebw.com/${locale}/photo-to-coloring-page` },
     ];
 
     // FAQ 数据

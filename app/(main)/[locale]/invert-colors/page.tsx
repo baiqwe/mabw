@@ -12,7 +12,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const t = await getTranslations({ locale, namespace: 'pages' });
 
     const isZh = locale === 'zh';
-    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const ogImage = 'https://www.makebw.com/web-app-manifest-512x512.png';
 
     return {
         title: t('invert_title'),
@@ -21,7 +21,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             title: t('invert_title'),
             description: t('invert_desc'),
             type: 'website',
-            url: `https://makebw.com/${locale}/invert-colors`,
+            url: `https://www.makebw.com/${locale}/invert-colors`,
             images: [
                 {
                     url: ogImage,
@@ -57,8 +57,8 @@ export default async function InvertColorsPage(props: { params: Promise<{ locale
 
     // 面包屑
     const breadcrumbs = [
-        { name: isZh ? '首页' : 'Home', url: `https://makebw.com/${locale}` },
-        { name: isZh ? '反色工具' : 'Invert Colors', url: `https://makebw.com/${locale}/invert-colors` },
+        { name: isZh ? '首页' : 'Home', url: `https://www.makebw.com/${locale}` },
+        { name: isZh ? '反色工具' : 'Invert Colors', url: `https://www.makebw.com/${locale}/invert-colors` },
     ];
 
     // FAQ

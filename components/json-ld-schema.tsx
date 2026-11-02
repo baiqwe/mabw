@@ -29,7 +29,7 @@ export async function SoftwareApplicationSchema({ locale }: { locale: string }) 
             "Privacy-first browser processing",
             "No upload required"
         ],
-        "screenshot": "https://makebw.com/og-image.png",
+        "screenshot": "https://www.makebw.com/og-image.png",
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "4.8",

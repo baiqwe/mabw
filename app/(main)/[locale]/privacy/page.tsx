@@ -12,7 +12,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const params = await props.params;
     const { locale } = params;
     const isZh = locale === 'zh';
-    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const ogImage = 'https://www.makebw.com/web-app-manifest-512x512.png';
     const title = isZh ? '隐私政策 - MakeBW.com' : 'Privacy Policy - MakeBW.com';
     const description = isZh
         ? 'MakeBW 的隐私政策。所有图片处理都在您的浏览器本地完成，从不上传到服务器。了解我们如何保护您的隐私。'
@@ -25,7 +25,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             title,
             description,
             type: 'website',
-            url: `https://makebw.com/${locale}/privacy`,
+            url: `https://www.makebw.com/${locale}/privacy`,
             images: [
                 {
                     url: ogImage,
@@ -59,8 +59,8 @@ export default async function PrivacyPage(props: { params: Promise<{ locale: str
     const localePrefix = `/${locale}`;
 
     const breadcrumbs = [
-        { name: isZh ? '首页' : 'Home', url: `https://makebw.com/${locale}` },
-        { name: isZh ? '隐私政策' : 'Privacy Policy', url: `https://makebw.com/${locale}/privacy` },
+        { name: isZh ? '首页' : 'Home', url: `https://www.makebw.com/${locale}` },
+        { name: isZh ? '隐私政策' : 'Privacy Policy', url: `https://www.makebw.com/${locale}/privacy` },
     ];
 
     return (

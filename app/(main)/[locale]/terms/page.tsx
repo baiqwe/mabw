@@ -10,7 +10,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const params = await props.params;
     const { locale } = params;
     const isZh = locale === 'zh';
-    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const ogImage = 'https://www.makebw.com/web-app-manifest-512x512.png';
     const title = isZh ? '服务条款 - MakeBW.com' : 'Terms of Service - MakeBW.com';
     const description = isZh
         ? 'MakeBW.com 的服务条款。了解使用我们免费图片处理工具的条款和条件。'
@@ -23,7 +23,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             title,
             description,
             type: 'website',
-            url: `https://makebw.com/${locale}/terms`,
+            url: `https://www.makebw.com/${locale}/terms`,
             images: [
                 {
                     url: ogImage,
@@ -57,8 +57,8 @@ export default async function TermsPage(props: { params: Promise<{ locale: strin
     const localePrefix = `/${locale}`;
 
     const breadcrumbs = [
-        { name: isZh ? '首页' : 'Home', url: `https://makebw.com/${locale}` },
-        { name: isZh ? '服务条款' : 'Terms of Service', url: `https://makebw.com/${locale}/terms` },
+        { name: isZh ? '首页' : 'Home', url: `https://www.makebw.com/${locale}` },
+        { name: isZh ? '服务条款' : 'Terms of Service', url: `https://www.makebw.com/${locale}/terms` },
     ];
 
     return (

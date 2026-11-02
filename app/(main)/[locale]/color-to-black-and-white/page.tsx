@@ -13,7 +13,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     const t = await getTranslations({ locale, namespace: 'pages' });
 
     const isZh = locale === 'zh';
-    const ogImage = 'https://makebw.com/web-app-manifest-512x512.png';
+    const ogImage = 'https://www.makebw.com/web-app-manifest-512x512.png';
 
     return {
         title: t('color_to_bw_title'),
@@ -22,7 +22,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             title: t('color_to_bw_title'),
             description: t('color_to_bw_desc'),
             type: 'website',
-            url: `https://makebw.com/${locale}/color-to-black-and-white`,
+            url: `https://www.makebw.com/${locale}/color-to-black-and-white`,
             images: [
                 {
                     url: ogImage,
@@ -58,8 +58,8 @@ export default async function ColorToBWPage(props: { params: Promise<{ locale: s
 
     // 面包屑
     const breadcrumbs = [
-        { name: isZh ? '首页' : 'Home', url: `https://makebw.com/${locale}` },
-        { name: isZh ? '彩色转黑白' : 'Color to Black & White', url: `https://makebw.com/${locale}/color-to-black-and-white` },
+        { name: isZh ? '首页' : 'Home', url: `https://www.makebw.com/${locale}` },
+        { name: isZh ? '彩色转黑白' : 'Color to Black & White', url: `https://www.makebw.com/${locale}/color-to-black-and-white` },
     ];
 
     // FAQ

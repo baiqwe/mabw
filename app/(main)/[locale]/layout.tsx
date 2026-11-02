@@ -28,7 +28,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 
     return {
         // ✅ SEO 核心: metadataBase 用于生成绝对 URL
-        metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://makebw.com'),
+        metadataBase: new URL('https://www.makebw.com'),
 
         title: {
             default: messages.metadata.title,
@@ -48,11 +48,11 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             description: messages.metadata.description,
             type: "website",
             locale: locale === 'zh' ? 'zh_CN' : 'en_US',
-            url: `https://makebw.com/${locale}`,
+            url: `https://www.makebw.com/${locale}`,
             siteName: 'MakeBW.com',
             images: [
                 {
-                    url: 'https://makebw.com/web-app-manifest-512x512.png',
+                    url: 'https://www.makebw.com/web-app-manifest-512x512.png',
                     width: 512,
                     height: 512,
                     alt: 'MakeBW - Free Image to Black and White Converter',
@@ -65,7 +65,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
             card: "summary_large_image",
             title: messages.metadata.title,
             description: messages.metadata.description,
-            images: ['https://makebw.com/web-app-manifest-512x512.png'],
+            images: ['https://www.makebw.com/web-app-manifest-512x512.png'],
         },
 
         // ✅ Canonical & 多语言 alternates

@@ -9,7 +9,7 @@ Disallow: /*/forgot-password
 Disallow: /*/create
 
 # Host
-Host: https://makebw.com
+Host: https://www.makebw.com
 
 # Sitemaps
-Sitemap: https://makebw.com/sitemap.xml
+Sitemap: https://www.makebw.com/sitemap.xml
